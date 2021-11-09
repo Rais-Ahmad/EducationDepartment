@@ -11,8 +11,7 @@ public class StudentDTO {
 	private String phone;
 	private String email;
 	private String address;
-	private List<DegreeDTO> degree;
-	
+		
 	public String getFirstName() {
 		return firstName;
 	}
@@ -55,12 +54,7 @@ public class StudentDTO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public List<DegreeDTO> getDegree() {
-		return degree;
-	}
-	public void setDegree(List<DegreeDTO> degree) {
-		this.degree = degree;
-	}
+
 	
 		
 }

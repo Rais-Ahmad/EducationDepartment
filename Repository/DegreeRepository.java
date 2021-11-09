@@ -1,5 +1,7 @@
 package com.example.EducationDepartment.Repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.EducationDepartment.Model.Degree;
@@ -14,5 +16,5 @@ import com.example.EducationDepartment.Model.Degree;
 
 public interface DegreeRepository extends JpaRepository<Degree, Long>{
 
-	
+	Optional<Degree> findByName(String name);
 }

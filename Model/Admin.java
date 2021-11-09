@@ -15,7 +15,7 @@ import lombok.Data;
  * 
  * @author RaisAhmad
  * @date 29/10/2021
- * @Discription Admin Class
+ * @Discription AdminClass
  *
  */
 
@@ -27,34 +27,34 @@ public class Admin {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String firstName;
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String lastName;
 
 	@Column(nullable = false, unique = true)
 	private String email;
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private int age;
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String password;
 
 	@Column(nullable = true)
 	private String designation;
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String phone;
 
 	@Column(nullable = true)
 	private String departmentName;
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String address;
 
-	@Column(nullable = true)
+	@Column(nullable = false, unique = true)
 	private String cnic;
 
 	@Column(nullable = true)

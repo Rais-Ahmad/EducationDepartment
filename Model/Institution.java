@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
 
@@ -27,7 +28,7 @@ public class Institution {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(nullable = true)
+	@NotBlank(message = "Name of Institution is mandatory")
 	private String name;
 
 	@Column(nullable = true)

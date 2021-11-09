@@ -41,7 +41,7 @@ public class CurriculumController {
 
 	@GetMapping("/allCurriculum")
 
-	public ResponseEntity<Object> userList() {
+	public ResponseEntity<Object> curriculumList() {
 
 		List<Curriculum> userList = curriculumService.listAllUser();
 
@@ -60,7 +60,7 @@ public class CurriculumController {
 	 */
 	@PostMapping("/addCurriculum")
 
-	public ResponseEntity<String> addUser(@RequestBody Curriculum curriculum) {
+	public ResponseEntity<String> addCurriculum(@RequestBody Curriculum curriculum) {
 
 		curriculumService.saveCurriculum(curriculum);
 		LOG.info("Curriculum added successfully  " + curriculum);
@@ -74,7 +74,7 @@ public class CurriculumController {
 	 * @return
 	 */
 	@PutMapping("/updateCurriculum")
-	public ResponseEntity<Object> updateInstitution(@RequestBody Curriculum curriculum) {
+	public ResponseEntity<Object> updateCurriculum(@RequestBody Curriculum curriculum) {
 
 		try {
 			curriculumService.updateCurriculum(curriculum);

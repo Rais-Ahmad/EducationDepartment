@@ -20,6 +20,8 @@ import com.example.EducationDepartment.Model.Teacher;
 public interface StudentRepository extends JpaRepository<Student, Long> {
 	 Student findByEmail(@Param(value="email") String email);
 	 List<Student> findAllByStatus(boolean status);
+	 Optional<Student> findByCnic(String cnic);
+	 Optional<Student> findByCnicAndDegree(String cnic, String degree);
 	 List<Student> findAllByOrderByDateDesc();
 //	 Optional<Student> findByIdAndEmailTokenAndSmsToken(long id, int emailToken, int smsToken);
 	 Student findByIdAndEmailTokenAndSmsToken(long id, int emailToken, int smsToken);

@@ -45,14 +45,33 @@ public class Exam {
 	@Column(nullable = true)
 	private Date updatedDate;
 
+	/**
+	 * Many To Many Relationship between Exam and Institution
+	 */
+	
 	@ManyToMany(targetEntity = Institution.class, cascade = { CascadeType.MERGE })
 
 	@JoinTable(name = "t_ExamInstitution", joinColumns = { @JoinColumn(name = "id") }, inverseJoinColumns = {
 			@JoinColumn(name = "institutionId") })
 	private List<Institution> institution = new ArrayList<>();
 
+	/**
+	 * One To Many Relationship between Exam and Result
+	 */
 	
-	
+//	@OneToMany(targetEntity = Result.class, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+//	@JoinColumn(name = "resultId", referencedColumnName = "id")
+//	private List<Result> result = new ArrayList<>();
+//	
+//	
+//	public List<Result> getResult() {
+//		return result;
+//	}
+//
+//	public void setResult(List<Result> result) {
+//		this.result = result;
+//	}
+
 	public List<Institution> getInstitution() {
 		return institution;
 	}

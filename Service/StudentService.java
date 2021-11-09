@@ -8,6 +8,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
@@ -29,16 +31,18 @@ import com.example.EducationDepartment.Model.ProjectInterface.StudentResultDto;
 import com.example.EducationDepartment.Repository.DegreeRepository;
 import com.example.EducationDepartment.Repository.StudentRepository;
 import com.example.EducationDepartment.Util.Util;
+import com.mysql.cj.result.BooleanValueFactory;
 
 @Service
 public class StudentService {
+	private static final Logger LOG = LogManager.getLogger(StudentService.class);
 	private final StudentRepository studentRepository;
 	private final DegreeRepository degreeRepository;
 	private final JavaMailSender javaMailSender;
 
 	private final String ACCOUNT_SID = "AC31b2c9f66d33e1256230d66f8eb72516";
 
-	private final String AUTH_TOKEN = "22bb78ec016533c36dd36309e697bcd6";
+	private final String AUTH_TOKEN = "59b0c140cb6508a9942d592a9df496ac";
 
 	private final String FROM_NUMBER = "+14135531059";
 
@@ -56,8 +60,15 @@ public class StudentService {
 	 * @return
 	 */
 
-	public List<Student> listAllStudentsByDate() {
-		return studentRepository.findAllByOrderByDateDesc();
+	public ResponseEntity<Object> listAllStudentsByDate() {
+
+		List<Student> studentList = studentRepository.findAllByOrderByDateDesc();
+		if (studentList.isEmpty()) {
+			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(studentList, HttpStatus.OK);
+		}
+
 	}
 
 	/**
@@ -83,13 +94,38 @@ public class StudentService {
 
 			Calendar date = Calendar.getInstance();
 			student.setDate(date.getTime());
+			if (student.getFirstName() == null) {
+				return new ResponseEntity<>("First name can't be empty", HttpStatus.OK);
+			} else if (student.getLastName() == null) {
+				return new ResponseEntity<>("Last name can't be empty", HttpStatus.OK);
+			} else if (student.getAddress() == null) {
+				return new ResponseEntity<>("Address can't be empty", HttpStatus.OK);
+			} else if (student.getAge() == 0) {
+				return new ResponseEntity<>("Age can't be empty", HttpStatus.OK);
+			} else if (student.getPassword() == null) {
+				return new ResponseEntity<>("Password can't be empty", HttpStatus.OK);
+			} else if (student.getCnic() == null) {
+				return new ResponseEntity<>("CNIC can't be empty", HttpStatus.OK);
+			} else if (student.getPhone() == null) {
+				return new ResponseEntity<>("Phone can't be empty", HttpStatus.OK);
+			} else if (student.getEmail() == null) {
+				return new ResponseEntity<>("E-mail can't be empty", HttpStatus.OK);
+			} else {
 
-			student.setStatus(false);
+				student.setStatus(false);
 
-			studentRepository.save(student);
-			return new ResponseEntity<>("Registration performed Successfully! Your registration id is :" + student.getId(), HttpStatus.OK);
+				studentRepository.save(student);
+				LOG.info("Student added successfully : " + student);
+				return new ResponseEntity<>(
+						"Registration performed Successfully! Your registration id is :" + student.getId(),
+						HttpStatus.OK);
+			}
+
 		} catch (Exception e) {
-			return new ResponseEntity<>("Student already exist at this E-mail Address", HttpStatus.CONFLICT);
+			LOG.info("Student is not added ");
+			return new ResponseEntity<>(
+					"Either you are missing any detail or Student already exist at this E-mail Address",
+					HttpStatus.CONFLICT);
 		}
 
 	}
@@ -116,25 +152,8 @@ public class StudentService {
 			studentDTO.setEmail(student.get().getEmail());
 			studentDTO.setAge(student.get().getAge());
 			studentDTO.setPhone(student.get().getPhone());
-				
-			DegreeDTO degreeDTO = new DegreeDTO();
-			List<DegreeDTO> degreeDTOs = new ArrayList<DegreeDTO>();
-			Degree newDegree = new Degree();
-			
-			for (Degree degree : student.get().getDegree()) {
-				
-				degreeDTO.setName(degree.getName());
-				degreeDTO.setVerificationStatus(degree.isStatus());
-				
-				if(degree.isStatus() == true)
-				{
-				   degreeDTOs.add(degreeDTO);
-				}
 
-			}
-									
-			studentDTO.setDegree(degreeDTOs);
-			
+			LOG.info("Student DTO displayed  ");
 			return ResponseEntity.ok().body(studentDTO);
 		} else
 			return new ResponseEntity<>("Student not Found ", HttpStatus.BAD_REQUEST);
@@ -156,8 +175,10 @@ public class StudentService {
 			Calendar date = Calendar.getInstance();
 			student.setUpdatedDate(date.getTime());
 			studentRepository.save(student);
+			LOG.info("Student updated successfully : " + student);
 			return new ResponseEntity<>("Student has been successfully Updated", HttpStatus.CREATED);
 		} catch (NoSuchElementException e) {
+			LOG.info("Student is not updated ");
 			return new ResponseEntity<>("Student is not Updated", HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -176,8 +197,32 @@ public class StudentService {
 			Calendar date = Calendar.getInstance();
 			student.setUpdatedDate(date.getTime());
 			studentRepository.save(student);
+			LOG.info("Student password is updated :  " + student);
+			return new ResponseEntity<>("Student's password has been successfully Updated", HttpStatus.CREATED);
+		} catch (NoSuchElementException e) {
+			LOG.info("Student password is not updated ");
+			return new ResponseEntity<>("Student password is not Updated", HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	/**
+	 * @author RaisAhmad
+	 * @date 29/10/2021
+	 * @param student
+	 * @param phone
+	 * @return
+	 */
+
+	public ResponseEntity<Object> updateStudentPhone(Student student, String phone) {
+		try {
+			student.setPhone(phone);
+			Calendar date = Calendar.getInstance();
+			student.setUpdatedDate(date.getTime());
+			studentRepository.save(student);
+			LOG.info("Student's phone number is updated :  " + student);
 			return new ResponseEntity<>("Student has been successfully Updated", HttpStatus.CREATED);
 		} catch (NoSuchElementException e) {
+			LOG.info("Student name is not updated ");
 			return new ResponseEntity<>("Student is not Updated", HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -217,12 +262,14 @@ public class StudentService {
 				student.get().setExpirationDate(afterAdding3Mins);
 
 				student.get().setStatus(false);
+				LOG.info("Tokens sent successfully ");
 				return ResponseEntity.ok().body(studentRepository.save(student.get()));
 
 			} else
 				return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
 
 		} catch (Exception exception) {
+			LOG.info("Tokens can't be sent ");
 			return new ResponseEntity<>(exception, HttpStatus.NOT_FOUND);
 		}
 	}
@@ -244,12 +291,14 @@ public class StudentService {
 				student.setStatus(true);
 				System.out.println("Student is:  " + student.toString());
 				studentRepository.save(student);
+				LOG.info("Student verified successfully : " + student);
 				return new ResponseEntity<>("Student has been successfully Verified", HttpStatus.CREATED);
 
 			} else
 				return new ResponseEntity<>("Student has not been Verified! Token Expired!", HttpStatus.CREATED);
 
 		} catch (NoSuchElementException e) {
+			LOG.info("Student can not be verified ");
 			return new ResponseEntity<>("Student is not Verified ", HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -260,8 +309,15 @@ public class StudentService {
 	 * @param id
 	 */
 
-	public void deleteStudent(long id) {
-		studentRepository.deleteById(id);
+	public ResponseEntity<Object> deleteStudent(long id) {
+		try {
+			studentRepository.deleteById(id);
+			LOG.info("Student deleted successfully ");
+			return new ResponseEntity<Object>("Student deleted successfully! ", HttpStatus.OK);
+		} catch (Exception e) {
+			LOG.info("Student can't be deleted ");
+			return new ResponseEntity<Object>("Student not found! ", HttpStatus.NOT_FOUND);
+		}
 	}
 
 	public ResponseEntity<Object> getResultByStudentId(long id) {
@@ -274,29 +330,17 @@ public class StudentService {
 			ResultDTO resultDTO = new ResultDTO();
 			List<ResultDTO> resultDTOs = new ArrayList<ResultDTO>();
 			Result newResult = new Result();
-			List<InstitutionDTO> institutionDTOs = new ArrayList<InstitutionDTO>();
-
-			Institution institution = new Institution();
-			InstitutionDTO institutionDTO = new InstitutionDTO();
-			Exam exam = new Exam();
-
-			ExamDto examDto = new ExamDto();
-
-			examDto.setName(exam.getDiscription());
 
 			for (Result result : student.get().getResult()) {
 				resultDTO.setObtainedMarks(result.getObtainedMarks());
 				resultDTO.setTotalMarks(result.getTotalMarks());
+				resultDTO.setClassAndSec(result.getClassAndSec());
 				resultDTOs.add(resultDTO);
-				examDto.setName(result.getExam().getDiscription());
-				institutionDTO.setName(result.getExam().getInstitution().get(0).getName());
-				institutionDTOs.add(institutionDTO);
+
 			}
-			examDto.setInstitution(institutionDTOs);
-			resultDTO.setExam(examDto);
 
 			studentResultDTO.setResult(resultDTOs);
-
+			LOG.info("Student's result has been displayed ");
 			return ResponseEntity.ok().body(studentResultDTO);
 		} else
 			return new ResponseEntity<>("Student not Found ", HttpStatus.BAD_REQUEST);
@@ -315,13 +359,59 @@ public class StudentService {
 				degree.get().setStatus(true);
 				System.out.println("Degree is:  " + degree.toString());
 				degreeRepository.save(degree.get());
+				LOG.info("Degree has been verified successfully : " + degree);
 				return new ResponseEntity<>("Degree has been successfully Verified", HttpStatus.CREATED);
 
 			} else
 				return new ResponseEntity<>("Degree has not been Verified!", HttpStatus.CREATED);
 
 		} catch (NoSuchElementException e) {
+			LOG.info("Degree could not be verified ");
 			return new ResponseEntity<>("Degree is not Verified ", HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	public boolean verifyCNIC(String cnic) {
+
+		try {
+
+			Optional<Student> student = studentRepository.findByCnic(cnic);
+
+			if (student.isPresent()) {
+				LOG.info("CNIC verified ");
+				return true;
+			} else
+				return false;
+
+		} catch (Exception e) {
+			LOG.info("CNIC not verified ");
+			return false;
+
+		}
+
+	}
+
+	public boolean verifyQualification(String cnic, String degreeName) {
+
+		try {
+
+			Optional<Student> student = studentRepository.findByCnic(cnic);
+
+			if (student.isPresent()) {
+				student.get().getDegree();
+				for (Degree degree : student.get().getDegree()) {
+					if (degree.getName().equals(degreeName)) {
+						LOG.info("Qualification verified ");
+						return true;
+					}
+				}
+				return false;
+			} else
+				return false;
+
+		} catch (Exception e) {
+			LOG.info("Qualification not been verified ");
+			return false;
 		}
 	}
 

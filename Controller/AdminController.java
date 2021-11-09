@@ -84,16 +84,8 @@ public class AdminController {
 	public ResponseEntity<Object> studentList() {
 
 		if (isLogin) {
-
-			List<Student> userList = adminService.listAllStudentsByDate();
-
-			if (userList.isEmpty()) {
-				LOG.info("List is empty");
-				return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
-			} else {
-				LOG.info("List of Students : " + userList);
-				return new ResponseEntity<>(userList, HttpStatus.OK);
-			}
+			
+			return (ResponseEntity<Object>) adminService.listAllStudentsByDate();
 
 		} else
 			return new ResponseEntity<>("You are not logged in yet! ", HttpStatus.UNAUTHORIZED);
@@ -111,16 +103,7 @@ public class AdminController {
 	public ResponseEntity<Object> verifiedStudentsList() {
 
 		if (isLogin) {
-
-			List<Student> userList = adminService.listAllVerifiedStudents();
-
-			if (userList.isEmpty()) {
-				LOG.info("List is empty ");
-				return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
-			} else {
-				LOG.info("List of verified students : " + userList);
-				return new ResponseEntity<>(userList, HttpStatus.OK);
-			}
+			return (ResponseEntity<Object>) adminService.listAllVerifiedStudents();
 
 		} else
 			return new ResponseEntity<>("You are not logged in yet! ", HttpStatus.UNAUTHORIZED);
@@ -139,15 +122,8 @@ public class AdminController {
 
 		if (isLogin) {
 
-			List<Teacher> userList = adminService.listAllTeachersByDate();
+			return (ResponseEntity<Object>) adminService.listAllTeachersByDate();
 
-			if (userList.isEmpty()) {
-				LOG.info("List is empty ");
-				return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
-			} else {
-				LOG.info("List of teachers : " + userList);
-				return new ResponseEntity<>(userList, HttpStatus.OK);
-			}
 		} else
 			return new ResponseEntity<>("You are not logged in yet! ", HttpStatus.UNAUTHORIZED);
 
@@ -165,15 +141,8 @@ public class AdminController {
 
 		if (isLogin) {
 
-			List<Teacher> userList = adminService.listAllVerifiedTeachers();
+			return (ResponseEntity<Object>) adminService.listAllVerifiedTeachers();
 
-			if (userList.isEmpty()) {
-				LOG.info("List is empty : ");
-				return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
-			} else {
-				LOG.info("List of verified teachers : " + userList);
-				return new ResponseEntity<>(userList, HttpStatus.OK);
-			}
 		} else
 			return new ResponseEntity<>("You are not logged in yet! ", HttpStatus.UNAUTHORIZED);
 
@@ -188,15 +157,7 @@ public class AdminController {
 
 	public ResponseEntity<Object> adminList() {
 
-		List<Admin> userList = adminService.listAllAdminsByDate();
-
-		if (userList.isEmpty()) {
-			LOG.info("List is empty ");
-			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
-		} else {
-			LOG.info("List of admins : " + userList);
-			return new ResponseEntity<>(userList, HttpStatus.OK);
-		}
+		return (ResponseEntity<Object>) adminService.listAllAdminsByDate();
 
 	}
 
@@ -246,15 +207,8 @@ public class AdminController {
 
 	public ResponseEntity<Object> degreeList() {
 		if (isLogin) {
-			List<Degree> degreeList = adminService.listAllDegrees();
+			return (ResponseEntity<Object>) adminService.listAllDegrees();
 
-			if (degreeList.isEmpty()) {
-				LOG.info("List is empty ");
-				return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
-			} else {
-				LOG.info("List of admins : " + degreeList);
-				return new ResponseEntity<>(degreeList, HttpStatus.OK);
-			}
 		} else
 			return new ResponseEntity<>("You are not logged in yet! ", HttpStatus.UNAUTHORIZED);
 
@@ -581,15 +535,8 @@ public class AdminController {
 	public ResponseEntity<Object> examList() {
 		if (isLogin) {
 
-			List<Exam> examList = adminService.listAllExams();
+			return (ResponseEntity<Object>) adminService.listAllExams();
 
-			if (examList.isEmpty()) {
-				LOG.info("List is empty  ");
-				return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
-			} else {
-				LOG.info("List of results : " + examList);
-				return new ResponseEntity<>(examList, HttpStatus.OK);
-			}
 		} else
 			return new ResponseEntity<>("You are not logged in yet! ", HttpStatus.UNAUTHORIZED);
 

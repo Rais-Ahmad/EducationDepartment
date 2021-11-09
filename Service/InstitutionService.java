@@ -47,10 +47,15 @@ public class InstitutionService {
 
 			Calendar date = Calendar.getInstance();
 			institution.setDate(date.getTime());
+			
 
+			if (institution.getName() == null) {
+				return new ResponseEntity<>("Institution name can't be empty", HttpStatus.OK);
+			}else {
 			return ResponseEntity.ok().body(institutionRepository.save(institution));
+			}
 		} catch (Exception e) {
-			return new ResponseEntity<>("User already exist ", HttpStatus.CONFLICT);
+			return new ResponseEntity<>("Institution already exist ", HttpStatus.CONFLICT);
 		}
 
 	}

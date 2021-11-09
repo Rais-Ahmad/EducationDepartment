@@ -29,23 +29,16 @@ public class ResultController {
 	}
 
 	/**
-	 * @author Rais Ahmad
+	 * @author RaisAhmad
 	 * @date 29/10/2021
 	 * @return
 	 */
 	@GetMapping("/allResults")
 
-	public ResponseEntity<Object> userList() {
+	public ResponseEntity<Object> allResults() {
 
-		List<Result> userList = resultService.listAllUser();
+		return (ResponseEntity<Object>) resultService.listAllResults();
 
-		if (userList.isEmpty()) {
-			LOG.info("List is empty  ");
-			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
-		} else {
-			LOG.info("List of results : " + userList);
-			return new ResponseEntity<>(userList, HttpStatus.OK);
-		}
 	}
 
 }

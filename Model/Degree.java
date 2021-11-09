@@ -37,8 +37,19 @@ public class Degree {
 	@Column(nullable = true)
 	private Date updatedDate;
 
+	public String getStudentCnic() {
+		return studentCnic;
+	}
+
+	public void setStudentCnic(String studentCnic) {
+		this.studentCnic = studentCnic;
+	}
+
 	@Column(nullable = true)
 	private boolean status;
+	
+	@Column(nullable = true)
+	private String studentCnic;
 
 	public boolean isStatus() {
 		return status;

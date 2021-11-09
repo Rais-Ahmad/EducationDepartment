@@ -18,6 +18,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.websocket.OnMessage;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -41,28 +44,28 @@ public class Student {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String firstName;
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String lastName;
 
 	@Column(nullable = false, unique = true)
 	private String email;
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private int age;
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String password;
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String phone;
 
-	@Column(nullable = true)
+	@Column(nullable = false, unique = true)
 	private String cnic;
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String address;
 
 	@Column(nullable = true)

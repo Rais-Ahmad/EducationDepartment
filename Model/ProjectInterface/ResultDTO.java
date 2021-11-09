@@ -1,12 +1,19 @@
 package com.example.EducationDepartment.Model.ProjectInterface;
 
-import java.util.List;
 
 public class ResultDTO {
 
 	private String totalMarks;
 	private String obtainedMarks;
-	private ExamDto exam;
+	private String classAndSec;
+	
+	public String getClassAndSec() {
+		return classAndSec;
+	}
+
+	public void setClassAndSec(String classAndSec) {
+		this.classAndSec = classAndSec;
+	}
 
 	public String getTotalMarks() {
 		return totalMarks;
@@ -24,13 +31,6 @@ public class ResultDTO {
 		this.obtainedMarks = obtainedMarks;
 	}
 
-	public ExamDto getExam() {
-		return exam;
-	}
-
-	public void setExam(ExamDto exam) {
-		this.exam = exam;
-	}
 	
 
 }

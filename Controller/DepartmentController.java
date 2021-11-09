@@ -37,15 +37,15 @@ public class DepartmentController {
 	 */
 	 @GetMapping("/allDepartments")
 
-	    public ResponseEntity<Object> userList() {
+	    public ResponseEntity<Object> departmentList() {
 		 
-		 List<Department> userList = departmentService.listAllUser();
-		 LOG.info("List of departments : " + userList );
+		 List<Department> departmentList = departmentService.listAllUser();
+		 LOG.info("List of departments : " + departmentList );
          
-         if (userList.isEmpty()) {
+         if (departmentList.isEmpty()) {
              return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
          } else {
-             return new ResponseEntity<>(userList, HttpStatus.OK);
+             return new ResponseEntity<>(departmentList, HttpStatus.OK);
          }
         }
 	 
@@ -58,7 +58,7 @@ public class DepartmentController {
 	
 	 @PostMapping("/addDepartment")
 
-	 public ResponseEntity<String> addUser(@RequestBody Department department) {
+	 public ResponseEntity<String> addDepartment(@RequestBody Department department) {
    
 	            departmentService.saveDepartment(department);
 	            LOG.info("Department added : " + department.getName());
@@ -72,7 +72,7 @@ public class DepartmentController {
 	  * @return
 	  */
 	 @PutMapping("/updateDepartment")
-	    public ResponseEntity<Object> updateInstitution(@RequestBody Department department) {
+	    public ResponseEntity<Object> updateDepartment(@RequestBody Department department) {
 
 	            try {
 	                departmentService.updateDepartment(department);

@@ -81,15 +81,8 @@ public class StudentController {
 
 	public ResponseEntity<Object> studentList() {
 
-		List<Student> studentList = studentService.listAllStudentsByDate();
+		return (ResponseEntity<Object>) studentService.listAllStudentsByDate();
 
-		if (studentList.isEmpty()) {
-			LOG.info("List is empty ");
-			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
-		} else {
-			LOG.info("List of Students : " + studentList);
-			return new ResponseEntity<>(studentList, HttpStatus.OK);
-		}
 	}
 
 	/**
@@ -188,6 +181,33 @@ public class StudentController {
 	/**
 	 * @author RaisAhmad
 	 * @date 29/10/2021
+	 * @param student
+	 * @param phone
+	 * @return
+	 */
+	@PutMapping("/updateStudent'sPhone")
+
+	public ResponseEntity<Object> updatePhone(@RequestBody Student student, @RequestHeader String phone) {
+
+		if (isLogin) {
+
+			try {
+				studentService.updateStudentPhone(studentService.getStudent(idd), phone);
+				LOG.info("Student's phone number updated successfully ");
+				return new ResponseEntity<>("Student's phone number updated successfully ", HttpStatus.OK);
+			} catch (NoSuchElementException e) {
+				LOG.info("Student not found ");
+				return new ResponseEntity<>("Student not found incorrect id ", HttpStatus.NOT_FOUND);
+			}
+
+		} else
+			return new ResponseEntity<>("You are not logged in yet! ", HttpStatus.UNAUTHORIZED);
+
+	}
+
+	/**
+	 * @author RaisAhmad
+	 * @date 29/10/2021
 	 * @param id
 	 * @param emailToken
 	 * @param smsToken
@@ -226,20 +246,12 @@ public class StudentController {
 	 * @author RaisAhmad
 	 * @date 29/10/2021
 	 * @param id
-	 * @return
 	 */
 	@DeleteMapping("/{id}")
 
-	public ResponseEntity<String> deleteStudent(@PathVariable Long id) {
+	public ResponseEntity<Object> deleteStudent(@PathVariable Long id) {
 
-		try {
-			studentService.deleteStudent(id);
-			LOG.info("Student: " + id + " deleted successfully!");
-			return new ResponseEntity<>("Student deleted successfully", HttpStatus.OK);
-		} catch (NoSuchElementException e) {
-			LOG.error(e.getMessage(), e);
-			return new ResponseEntity<>("Student not found", HttpStatus.NOT_FOUND);
-		}
+		return studentService.deleteStudent(id);
 
 	}
 
@@ -286,6 +298,20 @@ public class StudentController {
 
 		} else
 			return new ResponseEntity<>("You are not logged in yet! ", HttpStatus.UNAUTHORIZED);
+
+	}
+
+	@GetMapping("/cnicVerification")
+	public boolean verifyCNIC(@RequestHeader String cnic) {
+
+		return studentService.verifyCNIC(cnic);
+
+	}
+
+	@GetMapping("/qualificationVerification")
+	public boolean verifyQualification(@RequestHeader String cnic, @RequestHeader String name) {
+
+		return studentService.verifyQualification(cnic, name);
 
 	}
 

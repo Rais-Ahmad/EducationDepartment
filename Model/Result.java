@@ -1,16 +1,22 @@
 package com.example.EducationDepartment.Model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -36,40 +42,46 @@ public class Result {
 	private Date date;
 
 	@Column(nullable = true)
+	private long studentId;
+
+	public long getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(long studentId) {
+		this.studentId = studentId;
+	}
+
+	@Column(nullable = true)
 	private String totalMarks;
+	
+	@Column(nullable = true)
+	private String classAndSec;
 
 	@Column(nullable = true)
 	private String obtainedMarks;
 
 	@Column(nullable = true)
 	private String updatedDate;
-	
-	@ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "student_id")
-    private Student student;
-	
-	
-	public Student getStudent() {
-		return student;
-	}
-
-	public void setStudent(Student student) {
-		this.student = student;
-	}
 
 	/**
-	 *  One To Many Relationship between Exam and Result
+	 * Many To Many Relationship between Exam and Result
 	 */
-    @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "exam_id", referencedColumnName = "id")
-    private Exam exam;
+	
+	@ManyToMany(targetEntity = Exam.class, cascade = { CascadeType.MERGE })
 
+	@JoinTable(name = "t_resultExam", joinColumns = { @JoinColumn(name = "id") }, inverseJoinColumns = {
+			@JoinColumn(name = "examId") })
 
-	public Exam getExam() {
+	private List<Exam> exam = new ArrayList<>();
+	
+	
+
+	public List<Exam> getExam() {
 		return exam;
 	}
 
-	public void setExam(Exam exam) {
+	public void setExam(List<Exam> exam) {
 		this.exam = exam;
 	}
 
@@ -79,6 +91,14 @@ public class Result {
 
 	public void setUpdatedDate(String updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+
+	public String getClassAndSec() {
+		return classAndSec;
+	}
+
+	public void setClassAndSec(String classAndSec) {
+		this.classAndSec = classAndSec;
 	}
 
 	public long getId() {

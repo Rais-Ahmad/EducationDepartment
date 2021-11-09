@@ -3,6 +3,8 @@ package com.example.EducationDepartment.Controller;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,7 +63,7 @@ public class InstitutionController {
 	 */
 	@PostMapping("/addInstitution")
 
-	public ResponseEntity<String> addUser(@RequestBody Institution institution) {
+	public ResponseEntity<String> addInstitution(@Valid @RequestBody Institution institution) {
 
 		institutionService.saveInstitution(institution);
 		LOG.info("Institution added successfully : " + institution);
@@ -89,5 +91,5 @@ public class InstitutionController {
 		}
 
 	}
-
+	
 }
