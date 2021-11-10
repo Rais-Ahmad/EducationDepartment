@@ -37,15 +37,22 @@ public class CurriculumService {
 	 * @param curriculum
 	 * @return
 	 */
-	public Object saveCurriculum(Curriculum curriculum) {
+	public ResponseEntity<Object> saveCurriculum(Curriculum curriculum) {
 
 		try {
 
+			if (curriculum.getDiscription() == null) {
+				return new ResponseEntity<>("Please Enter description ", HttpStatus.BAD_REQUEST);
+			} else if (curriculum.getClass() == null) {
+				return new ResponseEntity<>("Please Enter Class name ", HttpStatus.BAD_REQUEST);
+			}else {
+			
 			Calendar date = Calendar.getInstance();
 			curriculum.setDate(date.getTime());
 			return ResponseEntity.ok().body(curriculumRepository.save(curriculum));
+			}
 		} catch (Exception e) {
-			return new ResponseEntity<>("User already exist ", HttpStatus.CONFLICT);
+			return new ResponseEntity<>("Curriculum already exist ", HttpStatus.CONFLICT);
 		}
 
 	}

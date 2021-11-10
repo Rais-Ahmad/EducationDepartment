@@ -1,6 +1,5 @@
 package com.example.EducationDepartment.Controller;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.apache.logging.log4j.LogManager;
@@ -24,13 +23,12 @@ import com.example.EducationDepartment.Model.Degree;
 import com.example.EducationDepartment.Model.Department;
 import com.example.EducationDepartment.Model.Exam;
 import com.example.EducationDepartment.Model.Institution;
-import com.example.EducationDepartment.Model.Result;
 import com.example.EducationDepartment.Model.Student;
 import com.example.EducationDepartment.Model.Teacher;
 import com.example.EducationDepartment.Service.AdminService;
-import com.example.EducationDepartment.Service.ResultService;
-import com.example.EducationDepartment.Service.StudentService;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
@@ -56,10 +54,9 @@ public class AdminController {
 
 	@GetMapping("/adminLogin")
 
-	// Comparing Email and password of user from database
-
 	public ResponseEntity<Object> login(@RequestParam(value = "Email") String paramEmail,
-			@RequestParam(value = "password") String paramPassword) {
+			@Parameter @Schema(format = "password") @RequestParam(value = "password") String paramPassword) {
+		try {
 		Admin admin = adminService.getEmail(paramEmail);
 
 		if (paramEmail.equals(admin.getEmail()) && paramPassword.equals(admin.getPassword())) {
@@ -69,6 +66,9 @@ public class AdminController {
 			return new ResponseEntity<>("login successfully", HttpStatus.OK);
 		} else {
 			System.out.println(admin.getEmail() + "  name is " + admin.getFirstName() + "id is " + admin.getId());
+			return new ResponseEntity<>("Incorrect login details ", HttpStatus.NOT_FOUND);
+		}
+		}catch (Exception e) {
 			return new ResponseEntity<>("Incorrect login details ", HttpStatus.NOT_FOUND);
 		}
 
@@ -436,12 +436,10 @@ public class AdminController {
 	 */
 	@PostMapping("/addDegree")
 
-	public ResponseEntity<String> addDegree(@RequestBody Degree degree) {
+	public ResponseEntity<Object> addDegree(@RequestBody Degree degree) {
 
 		if (isLogin) {
-			adminService.saveDegree(degree);
-			LOG.info("Degree added successfully " + degree);
-			return new ResponseEntity<>("Degree Entered Successfully!", HttpStatus.OK);
+			return adminService.saveDegree(degree);
 		} else
 			return new ResponseEntity<>("You are not logged in yet! ", HttpStatus.UNAUTHORIZED);
 
@@ -493,19 +491,6 @@ public class AdminController {
 
 	}
 
-	@GetMapping("/degreeVerification")
-	public ResponseEntity<Object> verifyDegree(@RequestHeader long id) {
-
-		try {
-
-			return adminService.verifyDegree(id);
-
-		} catch (NoSuchElementException e) {
-
-			return new ResponseEntity<>("Degree not found", HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-
-	}
 
 	/**
 	 * @author RaisAhmad
@@ -515,11 +500,10 @@ public class AdminController {
 	 */
 	@PostMapping("/addExam")
 
-	public ResponseEntity<String> addExam(@RequestBody Exam exam) {
+	public ResponseEntity<Object> addExam(@RequestBody Exam exam) {
 		if (isLogin) {
-			adminService.saveExam(exam);
-			LOG.info("Admin Registered ");
-			return new ResponseEntity<>("Exam details added successfully!", HttpStatus.OK);
+		 return	adminService.saveExam(exam);
+			
 		} else
 			return new ResponseEntity<>("You are not logged in yet! ", HttpStatus.UNAUTHORIZED);
 

@@ -58,11 +58,9 @@ public class DepartmentController {
 	
 	 @PostMapping("/addDepartment")
 
-	 public ResponseEntity<String> addDepartment(@RequestBody Department department) {
+	 public ResponseEntity<Object> addDepartment(@RequestBody Department department) {
    
-	            departmentService.saveDepartment(department);
-	            LOG.info("Department added : " + department.getName());
-	            return new ResponseEntity<>("Department added successfully", HttpStatus.OK);	        
+	           return departmentService.saveDepartment(department);        
 	    }
 	 
 	 /**

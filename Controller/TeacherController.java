@@ -22,6 +22,8 @@ import com.example.EducationDepartment.Model.Teacher;
 import com.example.EducationDepartment.Service.ResultService;
 import com.example.EducationDepartment.Service.TeacherService;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
@@ -49,10 +51,10 @@ public class TeacherController {
 	 */
 	@GetMapping("/login")
 
-	// Comparing Email and password of user from database
-
+	
 	public ResponseEntity<Object> login(@RequestParam(value = "Email") String paramEmail,
-			@RequestParam(value = "password") String paramPassword) {
+			@Parameter @Schema(format = "password") @RequestParam(value = "password") String paramPassword) {
+		try {
 		Teacher teacher = teacherService.getEmail(paramEmail);
 
 		if (paramEmail.equals(teacher.getEmail()) && paramPassword.equals(teacher.getPassword())) {
@@ -64,6 +66,10 @@ public class TeacherController {
 			LOG.info("Incorrect details ");
 			System.out.println(teacher.getEmail() + "  name is " + teacher.getFirstName() + "id is " + teacher.getId());
 			return new ResponseEntity<>("Incorrect login details ", HttpStatus.NOT_FOUND);
+		}
+		}catch (Exception e) {
+			return new ResponseEntity<>("Incorrect login details ", HttpStatus.NOT_FOUND);
+
 		}
 
 	}
@@ -91,12 +97,10 @@ public class TeacherController {
 	 */
 	@PostMapping("/addResult")
 
-	public ResponseEntity<String> addResult(@RequestBody Result result) {
+	public ResponseEntity<Object> addResult(@RequestBody Result result) {
 
         if (isLogin) {
-		teacherService.saveResult(result);
-		LOG.info("result added successfully : " + result);
-		return new ResponseEntity<>("Result added successfully", HttpStatus.OK);
+		return teacherService.saveResult(result);
 
 		} else
 			return new ResponseEntity<>("You are not logged in yet! ", HttpStatus.UNAUTHORIZED);

@@ -1,10 +1,5 @@
 package com.example.EducationDepartment.Controller;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +14,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.EducationDepartment.Model.Admin;
-import com.example.EducationDepartment.Model.Department;
 import com.example.EducationDepartment.Model.Student;
-import com.example.EducationDepartment.Model.Teacher;
 import com.example.EducationDepartment.Service.StudentService;
+
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.NoSuchElementException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -51,11 +51,10 @@ public class StudentController {
 	 * @return
 	 */
 	@GetMapping("/login")
-
-	// Comparing Email and password of user from database
-
+	//@Parameter(schema = @Schema(type = "string", format = "password")) 
 	public ResponseEntity<Object> login(@RequestParam(value = "Email") String paramEmail,
-			@RequestParam(value = "password") String paramPassword) {
+       @Parameter @Schema(format = "password") @RequestParam(value = "password") String paramPassword) {
+		try {
 		Student student = studentService.getEmail(paramEmail);
 
 		if (paramEmail.equals(student.getEmail()) && paramPassword.equals(student.getPassword())) {
@@ -68,6 +67,11 @@ public class StudentController {
 			System.out.println(student.getEmail() + "  name is " + student.getFirstName() + "id is " + student.getId());
 			LOG.info("Incorrec details ");
 			return new ResponseEntity<>("Incorrect login details ", HttpStatus.NOT_FOUND);
+		
+		}
+		} catch (Exception e) {
+			return new ResponseEntity<>("Incorrect login details ", HttpStatus.NOT_FOUND);
+			
 		}
 
 	}
@@ -285,16 +289,10 @@ public class StudentController {
 	 * @return
 	 */
 	@GetMapping("/degreeVerification")
-	public ResponseEntity<Object> verifyDegree(@RequestHeader long id) {
+	public ResponseEntity<Object> verifyDegree(@RequestHeader String degreeName) {
 		if (isLogin) {
-			try {
-
-				return studentService.verifyDegree(id);
-
-			} catch (NoSuchElementException e) {
-
-				return new ResponseEntity<>("Degree not found", HttpStatus.INTERNAL_SERVER_ERROR);
-			}
+			
+				return studentService.verifyDegree(idd , degreeName);
 
 		} else
 			return new ResponseEntity<>("You are not logged in yet! ", HttpStatus.UNAUTHORIZED);
@@ -314,5 +312,4 @@ public class StudentController {
 		return studentService.verifyQualification(cnic, name);
 
 	}
-
 }

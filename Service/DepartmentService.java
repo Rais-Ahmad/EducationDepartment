@@ -39,17 +39,27 @@ public class DepartmentService {
 	 * @param department
 	 * @return
 	 */
-	public Object saveDepartment(Department department) {
+	public ResponseEntity<Object> saveDepartment(Department department) {
 
 		try {
 
+			if(department.getInstitution().isEmpty()) {
+				return new ResponseEntity<>("Institution can't be empty ", HttpStatus.BAD_REQUEST);	
+			} else if(department.getCurriculum().isEmpty()) {
+				return new ResponseEntity<>("Curriculum can't be empty ", HttpStatus.BAD_REQUEST);	
+			}else if (department.getName() == null) {
+				return new ResponseEntity<>("Please Enter department name ", HttpStatus.BAD_REQUEST);
+			} 
+			else {
+			
 			Calendar date = Calendar.getInstance();
 			department.setDate(date.getTime());
 			LOG.info("Department added successfully : " + department);
 			return ResponseEntity.ok().body(departmentRepository.save(department));
+			}
 		} catch (Exception e) {
 			LOG.info("Department could not not be added ");
-			return new ResponseEntity<>("User already exist ", HttpStatus.CONFLICT);
+			return new ResponseEntity<>("Department already exist ", HttpStatus.CONFLICT);
 		}
 
 	}

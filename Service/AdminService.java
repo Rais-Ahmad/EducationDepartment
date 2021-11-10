@@ -49,7 +49,7 @@ public class AdminService {
 
 	private final String ACCOUNT_SID = "AC31b2c9f66d33e1256230d66f8eb72516";
 
-	private final String AUTH_TOKEN = "59b0c140cb6508a9942d592a9df496ac";
+	private final String AUTH_TOKEN = "3a3228d4b942207bd6524f6b32736ce4";
 
 	private final String FROM_NUMBER = "+14135531059";
 
@@ -84,21 +84,21 @@ public class AdminService {
 			Calendar date = Calendar.getInstance();
 			admin.setDate(date.getTime());
 			if (admin.getFirstName() == null) {
-				return new ResponseEntity<>("First name can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("First name can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (admin.getLastName() == null) {
-				return new ResponseEntity<>("Last name can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("Last name can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (admin.getAddress() == null) {
-				return new ResponseEntity<>("Address can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("Address can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (admin.getAge() == 0) {
-				return new ResponseEntity<>("Age can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("Age can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (admin.getPassword() == null) {
-				return new ResponseEntity<>("Password can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("Password can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (admin.getCnic() == null) {
-				return new ResponseEntity<>("CNIC can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("CNIC can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (admin.getPhone() == null) {
-				return new ResponseEntity<>("Phone can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("Phone can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (admin.getEmail() == null) {
-				return new ResponseEntity<>("E-mail can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("E-mail can't be empty", HttpStatus.BAD_REQUEST);
 			} else {
 				admin.setStatus(false);
 
@@ -109,7 +109,7 @@ public class AdminService {
 						HttpStatus.OK);
 			}
 		} catch (Exception e) {
-			return new ResponseEntity<>("Admin already exist at this E-mail Address ", HttpStatus.CONFLICT);
+			return new ResponseEntity<>("Admin already exist at this E-mail Address or CNIC ", HttpStatus.CONFLICT);
 		}
 
 	}
@@ -448,15 +448,20 @@ public class AdminService {
 	public ResponseEntity<Object> saveDegree(Degree degree) {
 
 		try {
-
 			Calendar date = Calendar.getInstance();
 			degree.setDate(date.getTime());
+			if (degree.getName() == null) {
+				return new ResponseEntity<>("Degree name can't be empty", HttpStatus.OK);
+			} else if (degree.getStudentCnic() == null) {
+				return new ResponseEntity<>("Please Student's CNIC", HttpStatus.OK);
+			}else {
 			degree.setStatus(false);
 			LOG.info("Degree added successfully : " + degree);
 			return ResponseEntity.ok().body(degreeRepository.save(degree));
+			}
 		} catch (Exception e) {
 			LOG.info("Degree is not added ");
-			return new ResponseEntity<>("User already exist ", HttpStatus.CONFLICT);
+			return new ResponseEntity<>("Degree already exist ", HttpStatus.CONFLICT);
 		}
 
 	}
@@ -538,24 +543,6 @@ public class AdminService {
 		}
 	}
 
-	public ResponseEntity<Object> verifyDegree(long id) {
-		try {
-			Optional<Degree> degree = degreeRepository.findById(id);
-			if (degree.isPresent()) {
-				degree.get().setStatus(true);
-				System.out.println("Degree is:  " + degree.toString());
-				degreeRepository.save(degree.get());
-				LOG.info("Degree verified successfully : " + degree);
-				return new ResponseEntity<>("Degree has been successfully Verified", HttpStatus.CREATED);
-
-			} else
-				return new ResponseEntity<>("Degree has not been Verified!", HttpStatus.CREATED);
-
-		} catch (NoSuchElementException e) {
-			LOG.info("Degree is not verified ");
-			return new ResponseEntity<>("Degree is not Verified ", HttpStatus.BAD_REQUEST);
-		}
-	}
 
 	/**
 	 * @author RaisAhmad
@@ -563,17 +550,25 @@ public class AdminService {
 	 * @param exam
 	 * @return
 	 */
-	public Object saveExam(Exam exam) {
+	public ResponseEntity<Object> saveExam(Exam exam) {
 
 		try {
 
+			if (exam.getDiscription() == null) {
+				return new ResponseEntity<>("Please Enter exam discription ", HttpStatus.BAD_REQUEST);
+			}else if(exam.getInstitution().isEmpty()) {
+				return new ResponseEntity<>("Enter Institution details ", HttpStatus.BAD_REQUEST);
+			} 
+			else {
+			
 			Calendar date = Calendar.getInstance();
 			exam.setDate(date.getTime());
 			LOG.info("Exam added successfully : " + exam);
 			return ResponseEntity.ok().body(examRepository.save(exam));
+			}
 		} catch (Exception e) {
 			LOG.info("Exam is not added ");
-			return new ResponseEntity<>("User already exist ", HttpStatus.CONFLICT);
+			return new ResponseEntity<>("Exam already exist ", HttpStatus.CONFLICT);
 		}
 
 	}

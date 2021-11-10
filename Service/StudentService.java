@@ -1,5 +1,6 @@
 package com.example.EducationDepartment.Service;
 
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,7 +43,7 @@ public class StudentService {
 
 	private final String ACCOUNT_SID = "AC31b2c9f66d33e1256230d66f8eb72516";
 
-	private final String AUTH_TOKEN = "59b0c140cb6508a9942d592a9df496ac";
+	private final String AUTH_TOKEN = "3a3228d4b942207bd6524f6b32736ce4";
 
 	private final String FROM_NUMBER = "+14135531059";
 
@@ -95,21 +96,21 @@ public class StudentService {
 			Calendar date = Calendar.getInstance();
 			student.setDate(date.getTime());
 			if (student.getFirstName() == null) {
-				return new ResponseEntity<>("First name can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("First name can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (student.getLastName() == null) {
-				return new ResponseEntity<>("Last name can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("Last name can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (student.getAddress() == null) {
-				return new ResponseEntity<>("Address can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("Address can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (student.getAge() == 0) {
-				return new ResponseEntity<>("Age can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("Age can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (student.getPassword() == null) {
-				return new ResponseEntity<>("Password can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("Password can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (student.getCnic() == null) {
-				return new ResponseEntity<>("CNIC can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("CNIC can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (student.getPhone() == null) {
-				return new ResponseEntity<>("Phone can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("Phone can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (student.getEmail() == null) {
-				return new ResponseEntity<>("E-mail can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("E-mail can't be empty", HttpStatus.BAD_REQUEST);
 			} else {
 
 				student.setStatus(false);
@@ -121,11 +122,13 @@ public class StudentService {
 						HttpStatus.OK);
 			}
 
-		} catch (Exception e) {
+		} catch (NumberFormatException e) {
+			return new ResponseEntity<>("Wrong data type!", HttpStatus.CONFLICT);
+		}
+
+		catch (Exception e) {
 			LOG.info("Student is not added ");
-			return new ResponseEntity<>(
-					"Either you are missing any detail or Student already exist at this E-mail Address",
-					HttpStatus.CONFLICT);
+			return new ResponseEntity<>("Student already exist at this E-mail Address or CNIC", HttpStatus.CONFLICT);
 		}
 
 	}
@@ -204,7 +207,7 @@ public class StudentService {
 			return new ResponseEntity<>("Student password is not Updated", HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	/**
 	 * @author RaisAhmad
 	 * @date 29/10/2021
@@ -350,24 +353,35 @@ public class StudentService {
 	 * @author RaisAhmad
 	 * @date 4/11/2021
 	 * @param id
+	 * @param degreeName
 	 * @return
 	 */
-	public ResponseEntity<Object> verifyDegree(long id) {
+	
+	public ResponseEntity<Object> verifyDegree(long id, String degreeName) {
+
 		try {
-			Optional<Degree> degree = degreeRepository.findById(id);
-			if (degree.isPresent()) {
-				degree.get().setStatus(true);
-				System.out.println("Degree is:  " + degree.toString());
-				degreeRepository.save(degree.get());
-				LOG.info("Degree has been verified successfully : " + degree);
-				return new ResponseEntity<>("Degree has been successfully Verified", HttpStatus.CREATED);
 
+			Optional<Student> student = studentRepository.findById(id);
+
+			if (student.isPresent()) {
+				student.get().getDegree();
+				for (Degree degree : student.get().getDegree()) {
+					if (degree.getName().equals(degreeName)) {
+
+						degree.setStatus(true);
+						degreeRepository.save(degree);
+
+						LOG.info("Degree verified ");
+						return new ResponseEntity<>("Degree Verified ", HttpStatus.OK);
+					}
+				}
+				return new ResponseEntity<>("Degree not found ", HttpStatus.NOT_FOUND);
 			} else
-				return new ResponseEntity<>("Degree has not been Verified!", HttpStatus.CREATED);
+				return new ResponseEntity<>("Student not found ", HttpStatus.NOT_FOUND);
 
-		} catch (NoSuchElementException e) {
-			LOG.info("Degree could not be verified ");
-			return new ResponseEntity<>("Degree is not Verified ", HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			LOG.info("Degree not been verified ");
+			return new ResponseEntity<>("Degree not Verified ", HttpStatus.NOT_FOUND);
 		}
 	}
 

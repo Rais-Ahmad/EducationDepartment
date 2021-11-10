@@ -15,18 +15,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.websocket.OnMessage;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.internal.build.AllowSysOut;
 
-import lombok.Data;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * 
@@ -209,7 +204,7 @@ public class Student {
 	public void setAge(int age) {
 		this.age = age;
 	}
-
+	
 	public String getPassword() {
 		return password;
 	}

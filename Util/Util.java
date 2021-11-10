@@ -8,7 +8,7 @@ public class Util {
 
     private final String ACCOUNT_SID = "AC31b2c9f66d33e1256230d66f8eb72516";
 
-    private final String AUTH_TOKEN = "59b0c140cb6508a9942d592a9df496ac";
+    private final String AUTH_TOKEN = "3a3228d4b942207bd6524f6b32736ce4";
 
     private final String FROM_NUMBER = "+14135531059";
 

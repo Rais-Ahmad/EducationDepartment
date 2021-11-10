@@ -63,11 +63,9 @@ public class InstitutionController {
 	 */
 	@PostMapping("/addInstitution")
 
-	public ResponseEntity<String> addInstitution(@Valid @RequestBody Institution institution) {
+	public ResponseEntity<Object> addInstitution(@RequestBody Institution institution) {
 
-		institutionService.saveInstitution(institution);
-		LOG.info("Institution added successfully : " + institution);
-		return new ResponseEntity<>("Institution added successfully", HttpStatus.OK);
+		return institutionService.saveInstitution(institution);
 
 	}
 

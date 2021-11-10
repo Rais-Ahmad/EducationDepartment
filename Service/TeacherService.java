@@ -38,7 +38,7 @@ public class TeacherService {
 
 	private final String ACCOUNT_SID = "AC31b2c9f66d33e1256230d66f8eb72516";
 
-	private final String AUTH_TOKEN = "59b0c140cb6508a9942d592a9df496ac";
+	private final String AUTH_TOKEN = "3a3228d4b942207bd6524f6b32736ce4";
 
 	private final String FROM_NUMBER = "+14135531059";
 
@@ -66,23 +66,23 @@ public class TeacherService {
 			Calendar date = Calendar.getInstance();
 			teacher.setDate(date.getTime());
 			if (teacher.getFirstName() == null) {
-				return new ResponseEntity<>("First name can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("First name can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (teacher.getLastName() == null) {
-				return new ResponseEntity<>("Last name can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("Last name can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (teacher.getAddress() == null) {
-				return new ResponseEntity<>("Address can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("Address can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (teacher.getAge() == 0) {
-				return new ResponseEntity<>("Age can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("Age can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (teacher.getPassword() == null) {
-				return new ResponseEntity<>("Password can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("Password can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (teacher.getCnic() == null) {
-				return new ResponseEntity<>("CNIC can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("CNIC can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (teacher.getPhone() == null) {
-				return new ResponseEntity<>("Phone can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("Phone can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (teacher.getEmail() == null) {
-				return new ResponseEntity<>("E-mail can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("E-mail can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (teacher.getDepartmentName() == null) {
-				return new ResponseEntity<>("Department can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("Department can't be empty", HttpStatus.BAD_REQUEST);
 			}
 			else if (teacher.getDesignation() == null) {
 				return new ResponseEntity<>("Designation can't be empty", HttpStatus.OK);
@@ -108,7 +108,7 @@ public class TeacherService {
 			}
 		} catch (Exception e) {
 			LOG.info("Teacher already exist ");
-			return new ResponseEntity<>("Teacher already exist at this E-mail Address ", HttpStatus.CONFLICT);
+			return new ResponseEntity<>("Teacher already exist at this E-mail Address or CNIC ", HttpStatus.CONFLICT);
 		}
 
 	}
@@ -173,15 +173,27 @@ public class TeacherService {
 	 * @param result
 	 * @return
 	 */
-	public Object saveResult(Result result) {
+	public ResponseEntity<Object> saveResult(Result result) {
 
 		try {
 
 			Calendar date = Calendar.getInstance();
-
 			result.setDate(date.getTime());
+			if (result.getClassAndSec() == null) {
+				return new ResponseEntity<>("Class & Group name can't be empty", HttpStatus.BAD_REQUEST);
+			} else if (result.getStudentId() == 0) {
+				return new ResponseEntity<>("Student Id be empty", HttpStatus.BAD_REQUEST);
+			}else if (result.getObtainedMarks() == null) {
+				return new ResponseEntity<>("Obtained Marks can't be null", HttpStatus.BAD_REQUEST);
+			}else if (result.getTotalMarks() == null) {
+				return new ResponseEntity<>("Total Marks can't be null", HttpStatus.BAD_REQUEST);
+			}else if(result.getExam().isEmpty()) {
+				return new ResponseEntity<>("Enter Exam details ", HttpStatus.BAD_REQUEST);
+			}
+			else {
 			LOG.info("Result added successfully : " + result);
 			return ResponseEntity.ok().body(resultRepository.save(result));
+			}
 		} catch (Exception e) {
 			return new ResponseEntity<>("User already exist ", HttpStatus.CONFLICT);
 		}

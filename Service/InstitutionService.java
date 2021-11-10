@@ -41,16 +41,17 @@ public class InstitutionService {
 	 * @param institution
 	 * @return
 	 */
-	public Object saveInstitution(Institution institution) {
+	public ResponseEntity<Object> saveInstitution(Institution institution) {
 
 		try {
+			
 
 			Calendar date = Calendar.getInstance();
 			institution.setDate(date.getTime());
 			
 
 			if (institution.getName() == null) {
-				return new ResponseEntity<>("Institution name can't be empty", HttpStatus.OK);
+				return new ResponseEntity<>("Institution name can't be empty", HttpStatus.BAD_REQUEST);
 			}else {
 			return ResponseEntity.ok().body(institutionRepository.save(institution));
 			}

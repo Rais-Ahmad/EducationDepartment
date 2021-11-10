@@ -60,11 +60,9 @@ public class CurriculumController {
 	 */
 	@PostMapping("/addCurriculum")
 
-	public ResponseEntity<String> addCurriculum(@RequestBody Curriculum curriculum) {
+	public ResponseEntity<Object> addCurriculum(@RequestBody Curriculum curriculum) {
 
-		curriculumService.saveCurriculum(curriculum);
-		LOG.info("Curriculum added successfully  " + curriculum);
-		return new ResponseEntity<>("Curriculum added successfully", HttpStatus.OK);
+		return curriculumService.saveCurriculum(curriculum);
 	}
 
 	/**
