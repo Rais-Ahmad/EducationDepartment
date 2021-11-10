@@ -1,6 +1,5 @@
 package com.example.EducationDepartment.Service;
 
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,28 +10,22 @@ import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import com.example.EducationDepartment.Model.Admin;
 import com.example.EducationDepartment.Model.Degree;
-import com.example.EducationDepartment.Model.Exam;
-import com.example.EducationDepartment.Model.Institution;
 import com.example.EducationDepartment.Model.Result;
 import com.example.EducationDepartment.Model.Student;
-import com.example.EducationDepartment.Model.ProjectInterface.DegreeDTO;
-import com.example.EducationDepartment.Model.ProjectInterface.ExamDto;
-import com.example.EducationDepartment.Model.ProjectInterface.InstitutionDTO;
 import com.example.EducationDepartment.Model.ProjectInterface.ResultDTO;
 import com.example.EducationDepartment.Model.ProjectInterface.StudentDTO;
 import com.example.EducationDepartment.Model.ProjectInterface.StudentResultDto;
 import com.example.EducationDepartment.Repository.DegreeRepository;
 import com.example.EducationDepartment.Repository.StudentRepository;
 import com.example.EducationDepartment.Util.Util;
-import com.mysql.cj.result.BooleanValueFactory;
 
 @Service
 public class StudentService {
@@ -112,7 +105,7 @@ public class StudentService {
 			} else if (student.getEmail() == null) {
 				return new ResponseEntity<>("E-mail can't be empty", HttpStatus.BAD_REQUEST);
 			} else {
-
+				
 				student.setStatus(false);
 
 				studentRepository.save(student);
@@ -122,12 +115,12 @@ public class StudentService {
 						HttpStatus.OK);
 			}
 
-		} catch (NumberFormatException e) {
-			return new ResponseEntity<>("Wrong data type!", HttpStatus.CONFLICT);
-		}
-
+		}catch (NumberFormatException n) {
+				return new ResponseEntity<>("Enter a number in age ", HttpStatus.OK);
+		} 
 		catch (Exception e) {
 			LOG.info("Student is not added ");
+			
 			return new ResponseEntity<>("Student already exist at this E-mail Address or CNIC", HttpStatus.CONFLICT);
 		}
 
@@ -356,7 +349,7 @@ public class StudentService {
 	 * @param degreeName
 	 * @return
 	 */
-	
+
 	public ResponseEntity<Object> verifyDegree(long id, String degreeName) {
 
 		try {
