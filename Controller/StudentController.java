@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.EducationDepartment.Model.Degree;
 import com.example.EducationDepartment.Model.Student;
+import com.example.EducationDepartment.Model.ProjectInterface.StudentRegistation;
 import com.example.EducationDepartment.Service.StudentService;
 
 import io.swagger.v3.oas.annotations.Parameter;
@@ -56,7 +58,7 @@ public class StudentController {
 	 * @return
 	 */
 	@GetMapping("/login")
-	//@Parameter(schema = @Schema(type = "string", format = "password")) 
+	
 	public ResponseEntity<Object> login(@RequestParam(value = "Email") String paramEmail,
        @Parameter @Schema(format = "password") @RequestParam(value = "password") String paramPassword) {
 		try {
@@ -106,6 +108,15 @@ public class StudentController {
 
 		LOG.info("Student added successfully : " + student);
 		return studentService.saveStudent(student);
+
+	}
+	
+	@PostMapping("/studentRegisterDTO")
+
+	public ResponseEntity<Object> studentRegistrationDTO(@RequestBody StudentRegistation student) {
+
+		LOG.info("Student added successfully : " + student);
+		return studentService.registerStudent(student);
 
 	}
 
@@ -317,4 +328,13 @@ public class StudentController {
 		return studentService.verifyQualification(cnic, name);
 
 	}
+	
+	@PutMapping("/updateStudentDegreeeeeeeeeeeeeee")
+
+	public ResponseEntity<Object> updateStudentDegree(@RequestHeader long studentId, @RequestHeader long degreeId) {
+
+			return	studentService.updateStudentDegree(studentId, degreeId);
+			
+	}
+	
 }

@@ -22,8 +22,11 @@ import com.example.EducationDepartment.Model.Degree;
 import com.example.EducationDepartment.Model.Department;
 import com.example.EducationDepartment.Model.Exam;
 import com.example.EducationDepartment.Model.Institution;
+import com.example.EducationDepartment.Model.Result;
 import com.example.EducationDepartment.Model.Student;
 import com.example.EducationDepartment.Model.Teacher;
+import com.example.EducationDepartment.Model.ProjectInterface.DegreeDTO;
+import com.example.EducationDepartment.Model.ProjectInterface.ResultListDTO;
 import com.example.EducationDepartment.Repository.AdminRepository;
 import com.example.EducationDepartment.Repository.CurriculumRepository;
 import com.example.EducationDepartment.Repository.DegreeRepository;
@@ -33,6 +36,7 @@ import com.example.EducationDepartment.Repository.InstitutionRepository;
 import com.example.EducationDepartment.Repository.StudentRepository;
 import com.example.EducationDepartment.Repository.TeacherRepository;
 import com.example.EducationDepartment.Util.Util;
+import com.github.andrewoma.dexx.collection.ArrayList;
 
 @Service
 public class AdminService {
@@ -49,7 +53,7 @@ public class AdminService {
 
 	private final String ACCOUNT_SID = "AC31b2c9f66d33e1256230d66f8eb72516";
 
-	private final String AUTH_TOKEN = "3a3228d4b942207bd6524f6b32736ce4";
+	private final String AUTH_TOKEN = "5c8ed042ae883be2847db82fb3168e81";
 
 	private final String FROM_NUMBER = "+14135531059";
 
@@ -360,7 +364,8 @@ public class AdminService {
 			return new ResponseEntity<>("Student is not Updated", HttpStatus.BAD_REQUEST);
 		}
 	}
-
+	
+	
 	/**
 	 * @author RaisAhmad
 	 * @date 29/10/2021
@@ -588,5 +593,7 @@ public class AdminService {
 			return new ResponseEntity<>(examList, HttpStatus.OK);
 		}
 	}
+
+		
 
 }

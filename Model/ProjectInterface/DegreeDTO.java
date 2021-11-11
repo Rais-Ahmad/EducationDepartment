@@ -3,7 +3,16 @@ package com.example.EducationDepartment.Model.ProjectInterface;
 public class DegreeDTO {
 
 	private String name;
+	private String studentCnic;
 	private boolean verificationStatus;
+
+	public String getStudentCnic() {
+		return studentCnic;
+	}
+
+	public void setStudentCnic(String studentCnic) {
+		this.studentCnic = studentCnic;
+	}
 
 	public String getName() {
 		return name;
@@ -20,6 +29,8 @@ public class DegreeDTO {
 	public void setVerificationStatus(boolean verificationStatus) {
 		this.verificationStatus = verificationStatus;
 	}
+
+	
 	
 	
 }

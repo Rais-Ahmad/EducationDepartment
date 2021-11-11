@@ -26,6 +26,7 @@ import com.example.EducationDepartment.Model.Institution;
 import com.example.EducationDepartment.Model.Student;
 import com.example.EducationDepartment.Model.Teacher;
 import com.example.EducationDepartment.Service.AdminService;
+import com.example.EducationDepartment.Service.StudentService;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,11 +38,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class AdminController {
 	private static final Logger LOG = LogManager.getLogger(AdminController.class);
 	AdminService adminService;
+	StudentService studentService;
 	private static boolean isLogin = false;
 	private static long idd;
 
-	public AdminController(AdminService adminService) {
+	public AdminController(AdminService adminService, StudentService studentService) {
 		this.adminService = adminService;
+		this.studentService = studentService;
 	}
 
 	/**
@@ -305,16 +308,8 @@ public class AdminController {
 
 		if (isLogin) {
 
-			try {
-
-				adminService.updateStudent(student);
-				LOG.info("Student updated successfully ");
-				return new ResponseEntity<>("Student updated successfully ", HttpStatus.OK);
-			} catch (NoSuchElementException e) {
-				LOG.info("Student not found! ");
-				return new ResponseEntity<>("Student not found incorrect id ", HttpStatus.NOT_FOUND);
-			}
-
+			return	adminService.updateStudent(student);
+			
 		} else
 			return new ResponseEntity<>("You are not logged in yet! ", HttpStatus.UNAUTHORIZED);
 
@@ -544,6 +539,14 @@ public class AdminController {
 			return new ResponseEntity<>("Student not found", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
+	}
+	
+	@PutMapping("/updateStudentDegreeeeeeeeeeeeeee")
+
+	public ResponseEntity<Object> updateStudentDegree(@RequestHeader long studentId, @RequestHeader long degreeId) {
+
+			return	studentService.updateStudentDegree(studentId, degreeId);
+			
 	}
 
 }

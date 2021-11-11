@@ -1,8 +1,10 @@
 package com.example.EducationDepartment.Model.ProjectInterface;
 
+import java.util.List;
 
-public class StudentDTO {
+import com.example.EducationDepartment.Model.Department;
 
+public class StudentRegistation {
 	private String firstName;
 	private String lastName;
 	private String cnic;
@@ -10,7 +12,9 @@ public class StudentDTO {
 	private String phone;
 	private String email;
 	private String address;
-		
+	private String password;
+	private List<Department>departments;
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -53,7 +57,17 @@ public class StudentDTO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
+	public List<Department> getDepartments() {
+		return departments;
+	}
+	public void setDepartments(List<Department> departments) {
+		this.departments = departments;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	
-		
 }

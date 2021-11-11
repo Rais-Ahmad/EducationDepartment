@@ -22,6 +22,7 @@ import com.example.EducationDepartment.Model.Result;
 import com.example.EducationDepartment.Model.Student;
 import com.example.EducationDepartment.Model.ProjectInterface.ResultDTO;
 import com.example.EducationDepartment.Model.ProjectInterface.StudentDTO;
+import com.example.EducationDepartment.Model.ProjectInterface.StudentRegistation;
 import com.example.EducationDepartment.Model.ProjectInterface.StudentResultDto;
 import com.example.EducationDepartment.Repository.DegreeRepository;
 import com.example.EducationDepartment.Repository.StudentRepository;
@@ -36,7 +37,7 @@ public class StudentService {
 
 	private final String ACCOUNT_SID = "AC31b2c9f66d33e1256230d66f8eb72516";
 
-	private final String AUTH_TOKEN = "3a3228d4b942207bd6524f6b32736ce4";
+	private final String AUTH_TOKEN = "5c8ed042ae883be2847db82fb3168e81";
 
 	private final String FROM_NUMBER = "+14135531059";
 
@@ -105,7 +106,7 @@ public class StudentService {
 			} else if (student.getEmail() == null) {
 				return new ResponseEntity<>("E-mail can't be empty", HttpStatus.BAD_REQUEST);
 			} else {
-				
+
 				student.setStatus(false);
 
 				studentRepository.save(student);
@@ -115,12 +116,11 @@ public class StudentService {
 						HttpStatus.OK);
 			}
 
-		}catch (NumberFormatException n) {
-				return new ResponseEntity<>("Enter a number in age ", HttpStatus.OK);
-		} 
-		catch (Exception e) {
+		} catch (NumberFormatException n) {
+			return new ResponseEntity<>("Enter a number in age ", HttpStatus.OK);
+		} catch (Exception e) {
 			LOG.info("Student is not added ");
-			
+
 			return new ResponseEntity<>("Student already exist at this E-mail Address or CNIC", HttpStatus.CONFLICT);
 		}
 
@@ -420,6 +420,113 @@ public class StudentService {
 			LOG.info("Qualification not been verified ");
 			return false;
 		}
+	}
+
+	/**
+	 * Register Student via DTO
+	 * 
+	 */
+
+	public ResponseEntity<Object> registerStudent(StudentRegistation studentRegistation) {
+
+		try {
+			Student student = new Student();
+
+			if (studentRegistation.getFirstName() == null) {
+				return new ResponseEntity<>("First name can't be empty", HttpStatus.BAD_REQUEST);
+			} else if (studentRegistation.getLastName() == null) {
+				return new ResponseEntity<>("Last name can't be empty", HttpStatus.BAD_REQUEST);
+			} else if (studentRegistation.getAddress() == null) {
+				return new ResponseEntity<>("Address can't be empty", HttpStatus.BAD_REQUEST);
+			} else if (studentRegistation.getAge() == 0) {
+				return new ResponseEntity<>("Age can't be empty", HttpStatus.BAD_REQUEST);
+			} else if (studentRegistation.getPassword() == null) {
+				return new ResponseEntity<>("Password can't be empty", HttpStatus.BAD_REQUEST);
+			} else if (studentRegistation.getCnic() == null) {
+				return new ResponseEntity<>("CNIC can't be empty", HttpStatus.BAD_REQUEST);
+			} else if (studentRegistation.getPhone() == null) {
+				return new ResponseEntity<>("Phone can't be empty", HttpStatus.BAD_REQUEST);
+			} else if (studentRegistation.getEmail() == null) {
+				return new ResponseEntity<>("E-mail can't be empty", HttpStatus.BAD_REQUEST);
+			} else {
+
+				Calendar date = Calendar.getInstance();
+				student.setDate(date.getTime());
+				student.setFirstName(studentRegistation.getFirstName());
+				student.setLastName(studentRegistation.getLastName());
+				student.setAddress(studentRegistation.getAddress());
+				student.setAge(studentRegistation.getAge());
+				student.setCnic(studentRegistation.getCnic());
+				student.setEmail(studentRegistation.getEmail());
+				student.setPassword(studentRegistation.getPassword());
+				student.setPhone(studentRegistation.getPhone());
+				student.setDepartments(studentRegistation.getDepartments());
+
+				student.setStatus(false);
+
+				studentRepository.save(student);
+				LOG.info("Student added successfully : " + student);
+				return new ResponseEntity<>(
+						"Registration performed Successfully! Your registration id is :" + student.getId(),
+						HttpStatus.OK);
+			}
+
+		} catch (NumberFormatException n) {
+			return new ResponseEntity<>("Enter a number in age ", HttpStatus.OK);
+		} catch (Exception e) {
+			LOG.info("Student is not added ");
+
+			return new ResponseEntity<>("Student already exist at this E-mail Address or CNIC", HttpStatus.CONFLICT);
+		}
+
+	}
+
+	public ResponseEntity<Object> updateStudentDegree(long studentId, long degreeId) {
+
+		try {
+
+			Optional<Student> student = studentRepository.findById(studentId);
+			if (student.isPresent()) {
+				Optional<Degree> newDegree = degreeRepository.findById(degreeId);
+								
+				List<Degree> degreeList = degreeRepository.findAll();
+				List<Degree> degreeDTOs = new ArrayList<Degree>();
+				
+				if (newDegree.isPresent()) {
+					for (Degree degree : degreeList) {
+						
+						if (student.get().getCnic().equals(newDegree.get().getStudentCnic())) {
+							Degree degree1 = new Degree();
+						    degree1.setName(newDegree.get().getName());
+							degree1.setStudentCnic(newDegree.get().getStudentCnic());
+							System.out.println(newDegree.get().getStudentCnic());
+							degree1.setStatus(newDegree.get().isStatus());
+							degree1.setId(newDegree.get().getId());
+							degree1.setDate(newDegree.get().getDate());
+
+							degreeDTOs.add(degree1);
+							
+							student.get().setDegree(degreeDTOs);
+							studentRepository.save(student.get());
+
+							return new ResponseEntity<>("Degree added Successfully ", HttpStatus.OK);	
+						}
+
+					}
+
+					
+					return new ResponseEntity<>("This degree do not belongs to provided Student Id ", HttpStatus.OK);
+				}
+
+				return new ResponseEntity<>("Degree not found! ", HttpStatus.OK);
+			}
+
+			return new ResponseEntity<>("Student not found ", HttpStatus.OK);
+		} catch (Exception e) {
+			LOG.info("Degree coud not be added ");
+			return new ResponseEntity<>("Degree could not be added ", HttpStatus.NOT_FOUND);
+		}
+		
 	}
 
 }

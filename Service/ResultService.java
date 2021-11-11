@@ -40,7 +40,6 @@ public class ResultService {
 			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
 		} else {
 
-			// ResultDTO resultDTO = new ResultDTO();
 			List<ResultListDTO> resultDTOs = new ArrayList<ResultListDTO>();
 			Result newResult = new Result();
 

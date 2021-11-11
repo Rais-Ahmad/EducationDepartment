@@ -38,7 +38,7 @@ public class TeacherService {
 
 	private final String ACCOUNT_SID = "AC31b2c9f66d33e1256230d66f8eb72516";
 
-	private final String AUTH_TOKEN = "3a3228d4b942207bd6524f6b32736ce4";
+	private final String AUTH_TOKEN = "5c8ed042ae883be2847db82fb3168e81";
 
 	private final String FROM_NUMBER = "+14135531059";
 
