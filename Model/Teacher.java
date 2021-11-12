@@ -22,222 +22,215 @@ import lombok.Data;
 @Table(name = "t_teacher")
 public class Teacher {
 
-	 @Id
-	    @Column(nullable = false)
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private long id; 
-	 
-	    @Column(nullable = false)
-	    private String firstName; 
-	    
-	    @Column(nullable = false)
-	    private String lastName;
-	    
-	    @Column(nullable = false, unique = true)
-	    private String email;
-	    
-	    @Column(nullable = false)
-	    private int age;
-	    
-	    @Column(nullable = false)
-	    private String password; 
-	    
-	    @Column(nullable = true)
-	    private String designation; 
-	    
-	    @Column(nullable = false)
-	    private String phone;
-	    
-	    @Column(nullable = true)
-	    private String departmentName;
+	@Id
+	@Column(nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 
-	    @Column(nullable = false)
-	    private String address;
+	@Column(nullable = false)
+	private String firstName;
 
-	    @Column(nullable = false, unique= true)
-	    private String cnic;
-	    
-	    @Column(nullable = true)
-	    private String expirence;
-	    
-	    @Column(nullable = true)
-	    private Date date;
-	    
-	    @Column(nullable = true)
-	    private Date updatedDate;
-	    
-	    @Column(nullable = true)
-	    private Boolean criminalStatus;
-	    
-		@Column(nullable = true)
-		private int smsToken;
-		
-		@Column(nullable = true)
-		private int emailToken;
-		
-		@Column(nullable = true)
-		private boolean status;
-		
-		@Column(nullable = true)
-		private Date expirationDate;
-		
-	    
+	@Column(nullable = false)
+	private String lastName;
 
-		public Date getExpirationDate() {
-			return expirationDate;
-		}
+	@Column(nullable = false, unique = true)
+	private String email;
 
-		public void setExpirationDate(Date expirationDate) {
-			this.expirationDate = expirationDate;
-		}
+	@Column(nullable = false)
+	private int age;
 
-		public int getSmsToken() {
-			return smsToken;
-		}
+	@Column(nullable = false)
+	private String password;
 
-		public void setSmsToken(int smsToken) {
-			this.smsToken = smsToken;
-		}
+	@Column(nullable = true)
+	private String designation;
 
-		public int getEmailToken() {
-			return emailToken;
-		}
+	@Column(nullable = false)
+	private String phone;
 
-		public void setEmailToken(int emailToken) {
-			this.emailToken = emailToken;
-		}
+	@Column(nullable = true)
+	private String departmentName;
 
-		public boolean isStatus() {
-			return status;
-		}
+	@Column(nullable = false)
+	private String address;
 
-		public void setStatus(boolean status) {
-			this.status = status;
-		}
+	@Column(nullable = false, unique = true)
+	private String cnic;
 
-	
-		public Date getUpdatedDate() {
-			return updatedDate;
-		}
+	@Column(nullable = true)
+	private String expirence;
 
-		public void setUpdatedDate(Date updatedDate) {
-			this.updatedDate = updatedDate;
-		}
+	@Column(nullable = true)
+	private Date date;
 
-		public Boolean getCriminalStatus() {
-			return criminalStatus;
-		}
+	@Column(nullable = true)
+	private Date updatedDate;
 
-		public void setCriminalStatus(Boolean criminalStatus) {
-			this.criminalStatus = criminalStatus;
-		}
+	@Column(nullable = true)
+	private Boolean criminalStatus;
 
-		public long getId() {
-			return id;
-		}
+	@Column(nullable = true)
+	private int smsToken;
 
-		public void setId(long id) {
-			this.id = id;
-		}
+	@Column(nullable = true)
+	private int emailToken;
 
-		public String getFirstName() {
-			return firstName;
-		}
+	@Column(nullable = true)
+	private boolean status;
 
-		public void setFirstName(String firstName) {
-			this.firstName = firstName;
-		}
+	@Column(nullable = true)
+	private Date expirationDate;
 
-		public String getLastName() {
-			return lastName;
-		}
+	public Date getExpirationDate() {
+		return expirationDate;
+	}
 
-		public void setLastName(String lastName) {
-			this.lastName = lastName;
-		}
+	public void setExpirationDate(Date expirationDate) {
+		this.expirationDate = expirationDate;
+	}
 
-		public String getEmail() {
-			return email;
-		}
+	public int getSmsToken() {
+		return smsToken;
+	}
 
-		public void setEmail(String email) {
-			this.email = email;
-		}
+	public void setSmsToken(int smsToken) {
+		this.smsToken = smsToken;
+	}
 
-		public int getAge() {
-			return age;
-		}
+	public int getEmailToken() {
+		return emailToken;
+	}
 
-		public void setAge(int age) {
-			this.age = age;
-		}
+	public void setEmailToken(int emailToken) {
+		this.emailToken = emailToken;
+	}
 
-		public String getPassword() {
-			return password;
-		}
+	public boolean isStatus() {
+		return status;
+	}
 
-		public void setPassword(String password) {
-			this.password = password;
-		}
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
 
-		public String getDesignation() {
-			return designation;
-		}
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
 
-		public void setDesignation(String designation) {
-			this.designation = designation;
-		}
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
 
-		public String getPhone() {
-			return phone;
-		}
+	public Boolean getCriminalStatus() {
+		return criminalStatus;
+	}
 
-		public void setPhone(String phone) {
-			this.phone = phone;
-		}
+	public void setCriminalStatus(Boolean criminalStatus) {
+		this.criminalStatus = criminalStatus;
+	}
 
-		public String getDepartmentName() {
-			return departmentName;
-		}
+	public long getId() {
+		return id;
+	}
 
-		public void setDepartmentName(String departmentName) {
-			this.departmentName = departmentName;
-		}
+	public void setId(long id) {
+		this.id = id;
+	}
 
-		public String getAddress() {
-			return address;
-		}
+	public String getFirstName() {
+		return firstName;
+	}
 
-		public void setAddress(String address) {
-			this.address = address;
-		}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-		public String getCnic() {
-			return cnic;
-		}
+	public String getLastName() {
+		return lastName;
+	}
 
-		public void setCnic(String cnic) {
-			this.cnic = cnic;
-		}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-		public String getExpirence() {
-			return expirence;
-		}
+	public String getEmail() {
+		return email;
+	}
 
-		public void setExpirence(String expirence) {
-			this.expirence = expirence;
-		}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-		public Date getDate() {
-			return date;
-		}
+	public int getAge() {
+		return age;
+	}
 
-		public void setDate(Date date) {
-			this.date = date;
-		}
+	public void setAge(int age) {
+		this.age = age;
+	}
 
-	
+	public String getPassword() {
+		return password;
+	}
 
-	    
-	
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getCnic() {
+		return cnic;
+	}
+
+	public void setCnic(String cnic) {
+		this.cnic = cnic;
+	}
+
+	public String getExpirence() {
+		return expirence;
+	}
+
+	public void setExpirence(String expirence) {
+		this.expirence = expirence;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
 }

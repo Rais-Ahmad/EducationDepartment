@@ -17,7 +17,7 @@ public class SMSService {
 	private final String FROM_NUMBER = "+14135531059";
 
 	/**
-	 * @author Rais Ahmad
+	 * @author RaisAhmad
 	 * @date 29/10/2021
 	 * @param sms
 	 */
@@ -32,7 +32,7 @@ public class SMSService {
 	}
 
 	/**
-	 * @author Rais Ahmad
+	 * @author RaisAhmad
 	 * @date 29/10/2021
 	 * @param smscallback
 	 */

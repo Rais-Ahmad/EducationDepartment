@@ -10,7 +10,6 @@ import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
@@ -37,7 +36,7 @@ public class StudentService {
 
 	private final String ACCOUNT_SID = "AC31b2c9f66d33e1256230d66f8eb72516";
 
-	private final String AUTH_TOKEN = "5c8ed042ae883be2847db82fb3168e81";
+	private final String AUTH_TOKEN = "878e85a8be95077b40d9ab4e9856f25b";
 
 	private final String FROM_NUMBER = "+14135531059";
 
@@ -83,29 +82,40 @@ public class StudentService {
 	 * @return
 	 */
 
-	public ResponseEntity<Object> saveStudent(Student student) {
+	public ResponseEntity<Object> registerStudent(StudentRegistation studentRegistation) {
 
 		try {
+			Student student = new Student();
 
-			Calendar date = Calendar.getInstance();
-			student.setDate(date.getTime());
-			if (student.getFirstName() == null) {
+			if (studentRegistation.getFirstName() == null) {
 				return new ResponseEntity<>("First name can't be empty", HttpStatus.BAD_REQUEST);
-			} else if (student.getLastName() == null) {
+			} else if (studentRegistation.getLastName() == null) {
 				return new ResponseEntity<>("Last name can't be empty", HttpStatus.BAD_REQUEST);
-			} else if (student.getAddress() == null) {
+			} else if (studentRegistation.getAddress() == null) {
 				return new ResponseEntity<>("Address can't be empty", HttpStatus.BAD_REQUEST);
-			} else if (student.getAge() == 0) {
+			} else if (studentRegistation.getAge() == 0) {
 				return new ResponseEntity<>("Age can't be empty", HttpStatus.BAD_REQUEST);
-			} else if (student.getPassword() == null) {
+			} else if (studentRegistation.getPassword() == null) {
 				return new ResponseEntity<>("Password can't be empty", HttpStatus.BAD_REQUEST);
-			} else if (student.getCnic() == null) {
+			} else if (studentRegistation.getCnic() == null) {
 				return new ResponseEntity<>("CNIC can't be empty", HttpStatus.BAD_REQUEST);
-			} else if (student.getPhone() == null) {
+			} else if (studentRegistation.getPhone() == null) {
 				return new ResponseEntity<>("Phone can't be empty", HttpStatus.BAD_REQUEST);
-			} else if (student.getEmail() == null) {
+			} else if (studentRegistation.getEmail() == null) {
 				return new ResponseEntity<>("E-mail can't be empty", HttpStatus.BAD_REQUEST);
 			} else {
+
+				Calendar date = Calendar.getInstance();
+				student.setDate(date.getTime());
+				student.setFirstName(studentRegistation.getFirstName());
+				student.setLastName(studentRegistation.getLastName());
+				student.setAddress(studentRegistation.getAddress());
+				student.setAge(studentRegistation.getAge());
+				student.setCnic(studentRegistation.getCnic());
+				student.setEmail(studentRegistation.getEmail());
+				student.setPassword(studentRegistation.getPassword());
+				student.setPhone(studentRegistation.getPhone());
+				student.setDepartments(studentRegistation.getDepartments());
 
 				student.setStatus(false);
 
@@ -423,64 +433,12 @@ public class StudentService {
 	}
 
 	/**
-	 * Register Student via DTO
-	 * 
+	 * @author RaisAhmad
+	 * @date 11/11/2021
+	 * @param studentId
+	 * @param degreeId
+	 * @return
 	 */
-
-	public ResponseEntity<Object> registerStudent(StudentRegistation studentRegistation) {
-
-		try {
-			Student student = new Student();
-
-			if (studentRegistation.getFirstName() == null) {
-				return new ResponseEntity<>("First name can't be empty", HttpStatus.BAD_REQUEST);
-			} else if (studentRegistation.getLastName() == null) {
-				return new ResponseEntity<>("Last name can't be empty", HttpStatus.BAD_REQUEST);
-			} else if (studentRegistation.getAddress() == null) {
-				return new ResponseEntity<>("Address can't be empty", HttpStatus.BAD_REQUEST);
-			} else if (studentRegistation.getAge() == 0) {
-				return new ResponseEntity<>("Age can't be empty", HttpStatus.BAD_REQUEST);
-			} else if (studentRegistation.getPassword() == null) {
-				return new ResponseEntity<>("Password can't be empty", HttpStatus.BAD_REQUEST);
-			} else if (studentRegistation.getCnic() == null) {
-				return new ResponseEntity<>("CNIC can't be empty", HttpStatus.BAD_REQUEST);
-			} else if (studentRegistation.getPhone() == null) {
-				return new ResponseEntity<>("Phone can't be empty", HttpStatus.BAD_REQUEST);
-			} else if (studentRegistation.getEmail() == null) {
-				return new ResponseEntity<>("E-mail can't be empty", HttpStatus.BAD_REQUEST);
-			} else {
-
-				Calendar date = Calendar.getInstance();
-				student.setDate(date.getTime());
-				student.setFirstName(studentRegistation.getFirstName());
-				student.setLastName(studentRegistation.getLastName());
-				student.setAddress(studentRegistation.getAddress());
-				student.setAge(studentRegistation.getAge());
-				student.setCnic(studentRegistation.getCnic());
-				student.setEmail(studentRegistation.getEmail());
-				student.setPassword(studentRegistation.getPassword());
-				student.setPhone(studentRegistation.getPhone());
-				student.setDepartments(studentRegistation.getDepartments());
-
-				student.setStatus(false);
-
-				studentRepository.save(student);
-				LOG.info("Student added successfully : " + student);
-				return new ResponseEntity<>(
-						"Registration performed Successfully! Your registration id is :" + student.getId(),
-						HttpStatus.OK);
-			}
-
-		} catch (NumberFormatException n) {
-			return new ResponseEntity<>("Enter a number in age ", HttpStatus.OK);
-		} catch (Exception e) {
-			LOG.info("Student is not added ");
-
-			return new ResponseEntity<>("Student already exist at this E-mail Address or CNIC", HttpStatus.CONFLICT);
-		}
-
-	}
-
 	public ResponseEntity<Object> updateStudentDegree(long studentId, long degreeId) {
 
 		try {
@@ -488,16 +446,16 @@ public class StudentService {
 			Optional<Student> student = studentRepository.findById(studentId);
 			if (student.isPresent()) {
 				Optional<Degree> newDegree = degreeRepository.findById(degreeId);
-								
+
 				List<Degree> degreeList = degreeRepository.findAll();
 				List<Degree> degreeDTOs = new ArrayList<Degree>();
-				
+
 				if (newDegree.isPresent()) {
 					for (Degree degree : degreeList) {
-						
+
 						if (student.get().getCnic().equals(newDegree.get().getStudentCnic())) {
 							Degree degree1 = new Degree();
-						    degree1.setName(newDegree.get().getName());
+							degree1.setName(newDegree.get().getName());
 							degree1.setStudentCnic(newDegree.get().getStudentCnic());
 							System.out.println(newDegree.get().getStudentCnic());
 							degree1.setStatus(newDegree.get().isStatus());
@@ -505,16 +463,15 @@ public class StudentService {
 							degree1.setDate(newDegree.get().getDate());
 
 							degreeDTOs.add(degree1);
-							
+
 							student.get().setDegree(degreeDTOs);
 							studentRepository.save(student.get());
 
-							return new ResponseEntity<>("Degree added Successfully ", HttpStatus.OK);	
+							return new ResponseEntity<>("Degree added Successfully ", HttpStatus.OK);
 						}
 
 					}
 
-					
 					return new ResponseEntity<>("This degree do not belongs to provided Student Id ", HttpStatus.OK);
 				}
 
@@ -526,7 +483,7 @@ public class StudentService {
 			LOG.info("Degree coud not be added ");
 			return new ResponseEntity<>("Degree could not be added ", HttpStatus.NOT_FOUND);
 		}
-		
+
 	}
 
 }

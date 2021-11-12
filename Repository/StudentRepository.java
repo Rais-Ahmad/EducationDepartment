@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.example.EducationDepartment.Model.Student;
-import com.example.EducationDepartment.Model.Teacher;
 
 /**
  * 
@@ -18,11 +17,16 @@ import com.example.EducationDepartment.Model.Teacher;
  */
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
-	 Student findByEmail(@Param(value="email") String email);
-	 List<Student> findAllByStatus(boolean status);
-	 Optional<Student> findByCnic(String cnic);
-	 Optional<Student> findByCnicAndDegree(String cnic, String degree);
-	 List<Student> findAllByOrderByDateDesc();
+	Student findByEmail(@Param(value = "email") String email);
+
+	List<Student> findAllByStatus(boolean status);
+
+	Optional<Student> findByCnic(String cnic);
+
+	Optional<Student> findByCnicAndDegree(String cnic, String degree);
+
+	List<Student> findAllByOrderByDateDesc();
+
 //	 Optional<Student> findByIdAndEmailTokenAndSmsToken(long id, int emailToken, int smsToken);
-	 Student findByIdAndEmailTokenAndSmsToken(long id, int emailToken, int smsToken);
+	Student findByIdAndEmailTokenAndSmsToken(long id, int emailToken, int smsToken);
 }

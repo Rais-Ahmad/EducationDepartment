@@ -23,68 +23,64 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @RestController
 @RequestMapping("/department")
 public class DepartmentController {
-	 private static final Logger LOG = LogManager.getLogger(DepartmentController.class);
+	private static final Logger LOG = LogManager.getLogger(DepartmentController.class);
 	DepartmentService departmentService;
-	
+
 	public DepartmentController(DepartmentService departmentService) {
 		this.departmentService = departmentService;
 	}
-	
+
 	/**
 	 * @author RaisAhmad
 	 * @date 29/10/2021
 	 * @return
 	 */
-	 @GetMapping("/allDepartments")
+	@GetMapping("/allDepartments")
 
-	    public ResponseEntity<Object> departmentList() {
-		 
-		 List<Department> departmentList = departmentService.listAllUser();
-		 LOG.info("List of departments : " + departmentList );
-         
-         if (departmentList.isEmpty()) {
-             return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
-         } else {
-             return new ResponseEntity<>(departmentList, HttpStatus.OK);
-         }
-        }
-	 
-	 /**
-	  * @author RaisAhmad
-	  * @date 29/10/2021
-	  * @param department
-	  * @return
-	  */
-	
-	 @PostMapping("/addDepartment")
+	public ResponseEntity<Object> departmentList() {
 
-	 public ResponseEntity<Object> addDepartment(@RequestBody Department department) {
-   
-	           return departmentService.saveDepartment(department);        
-	    }
-	 
-	 /**
-	  * @author RaisAhmad
-	  * @date 29/10/2021
-	  * @param department
-	  * @return
-	  */
-	 @PutMapping("/updateDepartment")
-	    public ResponseEntity<Object> updateDepartment(@RequestBody Department department) {
+		List<Department> departmentList = departmentService.listAllUser();
+		LOG.info("List of departments : " + departmentList);
 
-	            try {
-	                departmentService.updateDepartment(department);
-	                LOG.info("Department updated successfully:  " + department);
-	                return new ResponseEntity<>("Department info updated successfully ", HttpStatus.OK);
-	            } catch (NoSuchElementException e) {
-	                LOG.error(e.getMessage(), e);
-	                return new ResponseEntity<>("Department not found incorrect id ", HttpStatus.NOT_FOUND);
-	            }
-	        
-	    }
+		if (departmentList.isEmpty()) {
+			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(departmentList, HttpStatus.OK);
+		}
+	}
 
-	 
-	 
-	 
+	/**
+	 * @author RaisAhmad
+	 * @date 29/10/2021
+	 * @param department
+	 * @return
+	 */
+
+	@PostMapping("/addDepartment")
+
+	public ResponseEntity<Object> addDepartment(@RequestBody Department department) {
+
+		return departmentService.saveDepartment(department);
+	}
+
+	/**
+	 * @author RaisAhmad
+	 * @date 29/10/2021
+	 * @param department
+	 * @return
+	 */
+	@PutMapping("/updateDepartment")
+	public ResponseEntity<Object> updateDepartment(@RequestBody Department department) {
+
+		try {
+			departmentService.updateDepartment(department);
+			LOG.info("Department updated successfully:  " + department);
+			return new ResponseEntity<>("Department info updated successfully ", HttpStatus.OK);
+		} catch (NoSuchElementException e) {
+			LOG.error(e.getMessage(), e);
+			return new ResponseEntity<>("Department not found incorrect id ", HttpStatus.NOT_FOUND);
+		}
+
+	}
 
 }

@@ -1,5 +1,9 @@
 package com.example.EducationDepartment.Model.ProjectInterface;
-
+/**
+ * RegisterStudentDTO
+ * @author RaisAhmad
+ *
+ */
 import java.util.List;
 
 import com.example.EducationDepartment.Model.Department;

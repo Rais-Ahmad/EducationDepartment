@@ -54,7 +54,7 @@ public class Result {
 
 	@Column(nullable = true)
 	private String totalMarks;
-	
+
 	@Column(nullable = true)
 	private String classAndSec;
 
@@ -67,15 +67,13 @@ public class Result {
 	/**
 	 * Many To Many Relationship between Exam and Result
 	 */
-	
+
 	@ManyToMany(targetEntity = Exam.class, cascade = { CascadeType.MERGE })
 
 	@JoinTable(name = "t_resultExam", joinColumns = { @JoinColumn(name = "id") }, inverseJoinColumns = {
 			@JoinColumn(name = "examId") })
 
 	private List<Exam> exam = new ArrayList<>();
-	
-	
 
 	public List<Exam> getExam() {
 		return exam;

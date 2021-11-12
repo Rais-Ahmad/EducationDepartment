@@ -1,5 +1,10 @@
 package com.example.EducationDepartment.Model.ProjectInterface;
 
+/**
+ * StudentResultDTO
+ * @author RaisAhmad
+ *
+ */
 import java.util.List;
 
 

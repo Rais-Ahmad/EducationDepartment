@@ -1,5 +1,11 @@
 package com.example.EducationDepartment.Model.ProjectInterface;
 
+/**
+ * DegreeDTO
+ * @author RaisAhmad
+ *
+ */
+
 public class DegreeDTO {
 
 	private String name;
@@ -30,7 +36,4 @@ public class DegreeDTO {
 		this.verificationStatus = verificationStatus;
 	}
 
-	
-	
-	
 }

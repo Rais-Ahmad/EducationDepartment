@@ -6,7 +6,7 @@ import com.example.EducationDepartment.Model.Institution;
 
 /**
  * 
- * @author Rais Ahmad
+ * @author RaisAhmad
  * @date 29/10/2021
  * @Discription Institution Repository
  *

@@ -1,4 +1,9 @@
 package com.example.EducationDepartment.Model.ProjectInterface;
+/**
+ * ResultListDTO
+ * @author RaisAhmad
+ *
+ */
 
 public class ResultListDTO {
 	private String totalMarks;

@@ -1,5 +1,9 @@
 package com.example.EducationDepartment.Model.ProjectInterface;
-
+/**
+ * InstitutionDTO
+ * @author RaisAhmad
+ *
+ */
 public class InstitutionDTO {
 
 	private String name;
@@ -11,5 +15,5 @@ public class InstitutionDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 }

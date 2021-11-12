@@ -6,12 +6,12 @@ import com.example.EducationDepartment.Model.Curriculum;
 
 /**
  * 
- * @author Rais Ahmad
+ * @author RaisAhmad
  * @date 29/10/2021
  * @Discription Curriculum Repository
  *
  */
 
-public interface CurriculumRepository extends JpaRepository<Curriculum, Long>{
+public interface CurriculumRepository extends JpaRepository<Curriculum, Long> {
 
 }

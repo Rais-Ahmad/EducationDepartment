@@ -47,7 +47,7 @@ public class Degree {
 
 	@Column(nullable = true)
 	private boolean status;
-	
+
 	@Column(nullable = true)
 	private String studentCnic;
 

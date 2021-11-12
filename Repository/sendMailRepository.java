@@ -6,7 +6,7 @@ import com.example.EducationDepartment.Model.Mail;
 
 /**
  * 
- * @author Rais Ahmad
+ * @author RaisAhmad
  * @date 29/10/2021
  * @Discription Mail Repository
  * 

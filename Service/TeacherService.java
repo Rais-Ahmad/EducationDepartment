@@ -1,9 +1,8 @@
 package com.example.EducationDepartment.Service;
 
-import java.util.ArrayList;
+
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Random;
@@ -16,11 +15,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import com.example.EducationDepartment.Controller.TeacherController;
 import com.example.EducationDepartment.Model.Result;
 import com.example.EducationDepartment.Model.Student;
 import com.example.EducationDepartment.Model.Teacher;
-import com.example.EducationDepartment.Model.ProjectInterface.ResultDTO;
 import com.example.EducationDepartment.Model.ProjectInterface.TeacherDTO;
 import com.example.EducationDepartment.Repository.ResultRepository;
 import com.example.EducationDepartment.Repository.StudentRepository;
@@ -38,12 +35,13 @@ public class TeacherService {
 
 	private final String ACCOUNT_SID = "AC31b2c9f66d33e1256230d66f8eb72516";
 
-	private final String AUTH_TOKEN = "5c8ed042ae883be2847db82fb3168e81";
+	private final String AUTH_TOKEN = "878e85a8be95077b40d9ab4e9856f25b";
 
 	private final String FROM_NUMBER = "+14135531059";
 
 	public TeacherService(TeacherRepository teacherRepository, ResultRepository resultRepository,
-			JavaMailSender javaMailSender, PoliceServiceClient policeServiceClient, StudentRepository studentRepository) {
+			JavaMailSender javaMailSender, PoliceServiceClient policeServiceClient,
+			StudentRepository studentRepository) {
 
 		this.teacherRepository = teacherRepository;
 		this.resultRepository = resultRepository;
@@ -83,12 +81,19 @@ public class TeacherService {
 				return new ResponseEntity<>("E-mail can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (teacher.getDepartmentName() == null) {
 				return new ResponseEntity<>("Department can't be empty", HttpStatus.BAD_REQUEST);
-			}
-			else if (teacher.getDesignation() == null) {
+			} else if (teacher.getDesignation() == null) {
 				return new ResponseEntity<>("Designation can't be empty", HttpStatus.OK);
-			}else {
+			} else {
 				String cnic;
 				cnic = teacher.getCnic();
+				
+				
+				/**
+				 * The Commented code below is in case if we want the criminal status of
+				 * a person before registering him/her via an external party API.
+				 */
+				
+				
 //			boolean status = policeServiceClient.checkCriminalRecord(cnic);
 //			if(status == false)
 //			{
@@ -183,16 +188,15 @@ public class TeacherService {
 				return new ResponseEntity<>("Class & Group name can't be empty", HttpStatus.BAD_REQUEST);
 			} else if (result.getStudentId() == 0) {
 				return new ResponseEntity<>("Student Id be empty", HttpStatus.BAD_REQUEST);
-			}else if (result.getObtainedMarks() == null) {
+			} else if (result.getObtainedMarks() == null) {
 				return new ResponseEntity<>("Obtained Marks can't be null", HttpStatus.BAD_REQUEST);
-			}else if (result.getTotalMarks() == null) {
+			} else if (result.getTotalMarks() == null) {
 				return new ResponseEntity<>("Total Marks can't be null", HttpStatus.BAD_REQUEST);
-			}else if(result.getExam().isEmpty()) {
+			} else if (result.getExam().isEmpty()) {
 				return new ResponseEntity<>("Enter Exam details ", HttpStatus.BAD_REQUEST);
-			}
-			else {
-			LOG.info("Result added successfully : " + result);
-			return ResponseEntity.ok().body(resultRepository.save(result));
+			} else {
+				LOG.info("Result added successfully : " + result);
+				return ResponseEntity.ok().body(resultRepository.save(result));
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<>("User already exist ", HttpStatus.CONFLICT);
@@ -234,7 +238,7 @@ public class TeacherService {
 	public Result getResult(long id) {
 		return resultRepository.findById(id).get();
 	}
-	
+
 	public Student getStudentId(long id) {
 		return studentRepository.findById(id).get();
 	}
@@ -259,8 +263,8 @@ public class TeacherService {
 			return new ResponseEntity<>("Result is not Updated", HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-		/**
+
+	/**
 	 * @author RaisAhmad
 	 * @date 29/10/2021
 	 * @param teacher
@@ -355,7 +359,7 @@ public class TeacherService {
 			return new ResponseEntity<>("Teacher is not Updated", HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	/**
 	 * Get criminal status before registration using Feign client
 	 * 
@@ -374,7 +378,7 @@ public class TeacherService {
 
 	/**
 	 * Third-Party APIs
-	 * 
+	 * for bank info using feign client
 	 * @return
 	 */
 //	public String bankAPI() {

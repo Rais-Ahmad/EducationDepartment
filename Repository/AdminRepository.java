@@ -18,9 +18,10 @@ import com.example.EducationDepartment.Model.Teacher;
  */
 
 public interface AdminRepository extends JpaRepository<Admin, Long> {
-	 Admin findByEmail(@Param(value="email") String email);
-	 List<Admin> findAllByOrderByDateDesc();
-	 Admin findByIdAndEmailTokenAndSmsToken(long id, int emailToken, int smsToken);
-	 
+	Admin findByEmail(@Param(value = "email") String email);
+
+	List<Admin> findAllByOrderByDateDesc();
+
+	Admin findByIdAndEmailTokenAndSmsToken(long id, int emailToken, int smsToken);
 
 }

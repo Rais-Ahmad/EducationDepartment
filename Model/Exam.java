@@ -38,7 +38,7 @@ public class Exam {
 
 	@Column(nullable = true)
 	private Date date;
-	
+
 	@Column(nullable = true)
 	private String discription;
 
@@ -48,7 +48,7 @@ public class Exam {
 	/**
 	 * Many To Many Relationship between Exam and Institution
 	 */
-	
+
 	@ManyToMany(targetEntity = Institution.class, cascade = { CascadeType.MERGE })
 
 	@JoinTable(name = "t_ExamInstitution", joinColumns = { @JoinColumn(name = "id") }, inverseJoinColumns = {
@@ -58,7 +58,7 @@ public class Exam {
 	/**
 	 * One To Many Relationship between Exam and Result
 	 */
-	
+
 //	@OneToMany(targetEntity = Result.class, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 //	@JoinColumn(name = "resultId", referencedColumnName = "id")
 //	private List<Result> result = new ArrayList<>();
@@ -111,7 +111,5 @@ public class Exam {
 	public void setDiscription(String discription) {
 		this.discription = discription;
 	}
-
-
 
 }

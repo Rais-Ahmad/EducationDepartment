@@ -8,13 +8,13 @@ import com.example.EducationDepartment.Model.Degree;
 
 /**
  * 
- * @author Rais Ahmad
+ * @author RaisAhmad
  * @date 29/10/2021
  * @Discription Degree Repository
  *
  */
 
-public interface DegreeRepository extends JpaRepository<Degree, Long>{
+public interface DegreeRepository extends JpaRepository<Degree, Long> {
 
 	Optional<Degree> findByName(String name);
 }

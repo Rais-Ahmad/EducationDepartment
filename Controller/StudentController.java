@@ -38,7 +38,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @RestController
 @RequestMapping("/student")
 public class StudentController {
-	    
+
 	private static final Logger LOG = LogManager.getLogger(DepartmentController.class);
 
 	@Autowired
@@ -58,27 +58,28 @@ public class StudentController {
 	 * @return
 	 */
 	@GetMapping("/login")
-	
+
 	public ResponseEntity<Object> login(@RequestParam(value = "Email") String paramEmail,
-       @Parameter @Schema(format = "password") @RequestParam(value = "password") String paramPassword) {
+			@Parameter @Schema(format = "password") @RequestParam(value = "password") String paramPassword) {
 		try {
-		Student student = studentService.getEmail(paramEmail);
+			Student student = studentService.getEmail(paramEmail);
 
-		if (paramEmail.equals(student.getEmail()) && paramPassword.equals(student.getPassword())) {
-			isLogin = true;
-			idd = student.getId();
-			LOG.info("Login Successfully  ");
+			if (paramEmail.equals(student.getEmail()) && paramPassword.equals(student.getPassword())) {
+				isLogin = true;
+				idd = student.getId();
+				LOG.info("Login Successfully  ");
 
-			return new ResponseEntity<>("login successfully", HttpStatus.OK);
-		} else {
-			System.out.println(student.getEmail() + "  name is " + student.getFirstName() + "id is " + student.getId());
-			LOG.info("Incorrec details ");
-			return new ResponseEntity<>("Incorrect login details ", HttpStatus.NOT_FOUND);
-		
-		}
+				return new ResponseEntity<>("login successfully", HttpStatus.OK);
+			} else {
+				System.out.println(
+						student.getEmail() + "  name is " + student.getFirstName() + "id is " + student.getId());
+				LOG.info("Incorrec details ");
+				return new ResponseEntity<>("Incorrect login details ", HttpStatus.NOT_FOUND);
+
+			}
 		} catch (Exception e) {
 			return new ResponseEntity<>("Incorrect login details ", HttpStatus.NOT_FOUND);
-			
+
 		}
 
 	}
@@ -102,16 +103,8 @@ public class StudentController {
 	 * @param student
 	 * @return
 	 */
+
 	@PostMapping("/studentRegister")
-
-	public ResponseEntity<Object> studentRegistration(@RequestBody Student student) {
-
-		LOG.info("Student added successfully : " + student);
-		return studentService.saveStudent(student);
-
-	}
-	
-	@PostMapping("/studentRegisterDTO")
 
 	public ResponseEntity<Object> studentRegistrationDTO(@RequestBody StudentRegistation student) {
 
@@ -307,8 +300,8 @@ public class StudentController {
 	@GetMapping("/degreeVerification")
 	public ResponseEntity<Object> verifyDegree(@RequestHeader String degreeName) {
 		if (isLogin) {
-			
-				return studentService.verifyDegree(idd , degreeName);
+
+			return studentService.verifyDegree(idd, degreeName);
 
 		} else
 			return new ResponseEntity<>("You are not logged in yet! ", HttpStatus.UNAUTHORIZED);
@@ -328,13 +321,5 @@ public class StudentController {
 		return studentService.verifyQualification(cnic, name);
 
 	}
-	
-	@PutMapping("/updateStudentDegreeeeeeeeeeeeeee")
 
-	public ResponseEntity<Object> updateStudentDegree(@RequestHeader long studentId, @RequestHeader long degreeId) {
-
-			return	studentService.updateStudentDegree(studentId, degreeId);
-			
-	}
-	
 }

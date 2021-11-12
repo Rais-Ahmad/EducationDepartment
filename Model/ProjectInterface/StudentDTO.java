@@ -1,5 +1,10 @@
 package com.example.EducationDepartment.Model.ProjectInterface;
 
+/**
+ * StudentDTO
+ * @author RaisAhmad
+ *
+ */
 
 public class StudentDTO {
 

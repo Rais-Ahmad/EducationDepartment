@@ -74,7 +74,7 @@ public class Admin {
 
 	@Column(nullable = true)
 	private boolean status;
-	
+
 	@Column(nullable = true)
 	private Date expirationDate;
 

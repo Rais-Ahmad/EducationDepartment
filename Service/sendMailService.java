@@ -11,25 +11,25 @@ import javax.mail.MessagingException;
 
 @Service
 public class sendMailService implements sendMailRepository {
-    private final JavaMailSender javaMailSender;
+	private final JavaMailSender javaMailSender;
 
-    public sendMailService(JavaMailSender javaMailSender) {
-        this.javaMailSender = javaMailSender;
-    }
+	public sendMailService(JavaMailSender javaMailSender) {
+		this.javaMailSender = javaMailSender;
+	}
 
-    @Override
-    public void sendMail(Mail mail) {
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(mail.getRecipient(), mail.getRecipient());
+	@Override
+	public void sendMail(Mail mail) {
+		SimpleMailMessage msg = new SimpleMailMessage();
+		msg.setTo(mail.getRecipient(), mail.getRecipient());
 
-        msg.setSubject(mail.getSubject());
-        msg.setText(mail.getMessage());
+		msg.setSubject(mail.getSubject());
+		msg.setText(mail.getMessage());
 
-        javaMailSender.send(msg);
-    }
+		javaMailSender.send(msg);
+	}
 
-    @Override
-    public void sendMailWithAttachments(Mail mail) throws MessagingException {
+	@Override
+	public void sendMailWithAttachments(Mail mail) throws MessagingException {
 
-    }
+	}
 }

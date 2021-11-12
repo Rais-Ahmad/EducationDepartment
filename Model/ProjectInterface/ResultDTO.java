@@ -1,5 +1,9 @@
 package com.example.EducationDepartment.Model.ProjectInterface;
-
+/**
+ * ResultDTO
+ * @author RaisAhmad
+ *
+ */
 
 public class ResultDTO {
 

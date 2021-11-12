@@ -1,5 +1,9 @@
 package com.example.EducationDepartment.Model.ProjectInterface;
-
+/**
+ * ExamDTO
+ * @author RaisAhmad
+ *
+ */
 import java.util.List;
 
 public class ExamDto {
@@ -21,5 +25,5 @@ public class ExamDto {
 	public void setInstitution(List<InstitutionDTO> institution) {
 		this.institution = institution;
 	}
-	
+
 }

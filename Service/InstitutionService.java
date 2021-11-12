@@ -1,18 +1,13 @@
 package com.example.EducationDepartment.Service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
-
-import javax.transaction.Transactional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.EducationDepartment.Model.Institution;
-import com.example.EducationDepartment.Model.Student;
 import com.example.EducationDepartment.Repository.InstitutionRepository;
 
 @Service
@@ -44,16 +39,14 @@ public class InstitutionService {
 	public ResponseEntity<Object> saveInstitution(Institution institution) {
 
 		try {
-			
 
 			Calendar date = Calendar.getInstance();
 			institution.setDate(date.getTime());
-			
 
 			if (institution.getName() == null) {
 				return new ResponseEntity<>("Institution name can't be empty", HttpStatus.BAD_REQUEST);
-			}else {
-			return ResponseEntity.ok().body(institutionRepository.save(institution));
+			} else {
+				return ResponseEntity.ok().body(institutionRepository.save(institution));
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<>("Institution already exist ", HttpStatus.CONFLICT);

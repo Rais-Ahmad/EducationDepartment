@@ -77,7 +77,7 @@ public class Student {
 
 	@Column(nullable = true)
 	private boolean status;
-	
+
 	@Column(nullable = true)
 	private Date expirationDate;
 
@@ -204,7 +204,7 @@ public class Student {
 	public void setAge(int age) {
 		this.age = age;
 	}
-	
+
 	public String getPassword() {
 		return password;
 	}

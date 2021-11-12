@@ -1,5 +1,9 @@
 package com.example.EducationDepartment.Model.ProjectInterface;
-
+/**
+ * TeacherDTO
+ * @author RaisAhmad
+ *
+ */
 public class TeacherDTO {
 
 	private String firstName;

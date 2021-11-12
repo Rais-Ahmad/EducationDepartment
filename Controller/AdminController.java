@@ -60,18 +60,18 @@ public class AdminController {
 	public ResponseEntity<Object> login(@RequestParam(value = "Email") String paramEmail,
 			@Parameter @Schema(format = "password") @RequestParam(value = "password") String paramPassword) {
 		try {
-		Admin admin = adminService.getEmail(paramEmail);
+			Admin admin = adminService.getEmail(paramEmail);
 
-		if (paramEmail.equals(admin.getEmail()) && paramPassword.equals(admin.getPassword())) {
-			isLogin = true;
-			idd = admin.getId();
-			LOG.info("Login Successfully ");
-			return new ResponseEntity<>("login successfully", HttpStatus.OK);
-		} else {
-			System.out.println(admin.getEmail() + "  name is " + admin.getFirstName() + "id is " + admin.getId());
-			return new ResponseEntity<>("Incorrect login details ", HttpStatus.NOT_FOUND);
-		}
-		}catch (Exception e) {
+			if (paramEmail.equals(admin.getEmail()) && paramPassword.equals(admin.getPassword())) {
+				isLogin = true;
+				idd = admin.getId();
+				LOG.info("Login Successfully ");
+				return new ResponseEntity<>("login successfully", HttpStatus.OK);
+			} else {
+				System.out.println(admin.getEmail() + "  name is " + admin.getFirstName() + "id is " + admin.getId());
+				return new ResponseEntity<>("Incorrect login details ", HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
 			return new ResponseEntity<>("Incorrect login details ", HttpStatus.NOT_FOUND);
 		}
 
@@ -87,7 +87,7 @@ public class AdminController {
 	public ResponseEntity<Object> studentList() {
 
 		if (isLogin) {
-			
+
 			return (ResponseEntity<Object>) adminService.listAllStudentsByDate();
 
 		} else
@@ -308,8 +308,8 @@ public class AdminController {
 
 		if (isLogin) {
 
-			return	adminService.updateStudent(student);
-			
+			return adminService.updateStudent(student);
+
 		} else
 			return new ResponseEntity<>("You are not logged in yet! ", HttpStatus.UNAUTHORIZED);
 
@@ -486,7 +486,6 @@ public class AdminController {
 
 	}
 
-
 	/**
 	 * @author RaisAhmad
 	 * @date 1/11/2021
@@ -497,8 +496,8 @@ public class AdminController {
 
 	public ResponseEntity<Object> addExam(@RequestBody Exam exam) {
 		if (isLogin) {
-		 return	adminService.saveExam(exam);
-			
+			return adminService.saveExam(exam);
+
 		} else
 			return new ResponseEntity<>("You are not logged in yet! ", HttpStatus.UNAUTHORIZED);
 
@@ -540,13 +539,13 @@ public class AdminController {
 		}
 
 	}
-	
-	@PutMapping("/updateStudentDegreeeeeeeeeeeeeee")
+
+	@PutMapping("/updateStudent'sDegreeById")
 
 	public ResponseEntity<Object> updateStudentDegree(@RequestHeader long studentId, @RequestHeader long degreeId) {
 
-			return	studentService.updateStudentDegree(studentId, degreeId);
-			
+		return studentService.updateStudentDegree(studentId, degreeId);
+
 	}
 
 }

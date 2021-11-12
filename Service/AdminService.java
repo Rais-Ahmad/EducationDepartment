@@ -22,11 +22,8 @@ import com.example.EducationDepartment.Model.Degree;
 import com.example.EducationDepartment.Model.Department;
 import com.example.EducationDepartment.Model.Exam;
 import com.example.EducationDepartment.Model.Institution;
-import com.example.EducationDepartment.Model.Result;
 import com.example.EducationDepartment.Model.Student;
 import com.example.EducationDepartment.Model.Teacher;
-import com.example.EducationDepartment.Model.ProjectInterface.DegreeDTO;
-import com.example.EducationDepartment.Model.ProjectInterface.ResultListDTO;
 import com.example.EducationDepartment.Repository.AdminRepository;
 import com.example.EducationDepartment.Repository.CurriculumRepository;
 import com.example.EducationDepartment.Repository.DegreeRepository;
@@ -36,7 +33,6 @@ import com.example.EducationDepartment.Repository.InstitutionRepository;
 import com.example.EducationDepartment.Repository.StudentRepository;
 import com.example.EducationDepartment.Repository.TeacherRepository;
 import com.example.EducationDepartment.Util.Util;
-import com.github.andrewoma.dexx.collection.ArrayList;
 
 @Service
 public class AdminService {
@@ -53,7 +49,7 @@ public class AdminService {
 
 	private final String ACCOUNT_SID = "AC31b2c9f66d33e1256230d66f8eb72516";
 
-	private final String AUTH_TOKEN = "5c8ed042ae883be2847db82fb3168e81";
+	private final String AUTH_TOKEN = "878e85a8be95077b40d9ab4e9856f25b";
 
 	private final String FROM_NUMBER = "+14135531059";
 
@@ -364,8 +360,7 @@ public class AdminService {
 			return new ResponseEntity<>("Student is not Updated", HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	
+
 	/**
 	 * @author RaisAhmad
 	 * @date 29/10/2021
@@ -459,10 +454,10 @@ public class AdminService {
 				return new ResponseEntity<>("Degree name can't be empty", HttpStatus.OK);
 			} else if (degree.getStudentCnic() == null) {
 				return new ResponseEntity<>("Please Student's CNIC", HttpStatus.OK);
-			}else {
-			degree.setStatus(false);
-			LOG.info("Degree added successfully : " + degree);
-			return ResponseEntity.ok().body(degreeRepository.save(degree));
+			} else {
+				degree.setStatus(false);
+				LOG.info("Degree added successfully : " + degree);
+				return ResponseEntity.ok().body(degreeRepository.save(degree));
 			}
 		} catch (Exception e) {
 			LOG.info("Degree is not added ");
@@ -548,7 +543,6 @@ public class AdminService {
 		}
 	}
 
-
 	/**
 	 * @author RaisAhmad
 	 * @date 1/11/2021
@@ -561,15 +555,14 @@ public class AdminService {
 
 			if (exam.getDiscription() == null) {
 				return new ResponseEntity<>("Please Enter exam discription ", HttpStatus.BAD_REQUEST);
-			}else if(exam.getInstitution().isEmpty()) {
+			} else if (exam.getInstitution().isEmpty()) {
 				return new ResponseEntity<>("Enter Institution details ", HttpStatus.BAD_REQUEST);
-			} 
-			else {
-			
-			Calendar date = Calendar.getInstance();
-			exam.setDate(date.getTime());
-			LOG.info("Exam added successfully : " + exam);
-			return ResponseEntity.ok().body(examRepository.save(exam));
+			} else {
+
+				Calendar date = Calendar.getInstance();
+				exam.setDate(date.getTime());
+				LOG.info("Exam added successfully : " + exam);
+				return ResponseEntity.ok().body(examRepository.save(exam));
 			}
 		} catch (Exception e) {
 			LOG.info("Exam is not added ");
@@ -593,7 +586,5 @@ public class AdminService {
 			return new ResponseEntity<>(examList, HttpStatus.OK);
 		}
 	}
-
-		
 
 }
