@@ -3,17 +3,14 @@ package com.example.EducationDepartment.Controller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.EducationDepartment.Model.Permissions;
 import com.example.EducationDepartment.Service.PermissionService;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-
 @RestController
+//@CrossOrigin()
 @RequestMapping("/permission")
 
 public class PermissionController {
@@ -31,7 +28,7 @@ public class PermissionController {
 	 * @return
 	 */
 	@GetMapping("/allPermissions")
-
+    
 	public ResponseEntity<Object> permissionList() {
 
 		return permissionService.listAllPermissions();
