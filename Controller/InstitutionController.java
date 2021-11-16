@@ -3,8 +3,6 @@ package com.example.EducationDepartment.Controller;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,15 +42,8 @@ public class InstitutionController {
 
 	public ResponseEntity<Object> institutionList() {
 
-		List<Institution> institutionList = institutionService.listAllInstitutions();
+		return institutionService.listAllInstitutions();
 
-		if (institutionList.isEmpty()) {
-			LOG.info("List is empty ");
-			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
-		} else {
-			LOG.info("List of institutions : " + institutionList);
-			return new ResponseEntity<>(institutionList, HttpStatus.OK);
-		}
 	}
 
 	/**
@@ -79,14 +70,9 @@ public class InstitutionController {
 	@PutMapping("/updateInstitute")
 	public ResponseEntity<Object> updateInstitution(@RequestBody Institution institution) {
 
-		try {
-			institutionService.updateInstitution(institution);
-			LOG.info("Category updated successfully:  " + institution);
-			return new ResponseEntity<>("Institution updated successfully ", HttpStatus.OK);
-		} catch (NoSuchElementException e) {
-			LOG.error(e.getMessage(), e);
-			return new ResponseEntity<>("Institution not found incorrect id ", HttpStatus.NOT_FOUND);
-		}
+		
+			return institutionService.updateInstitution(institution);
+			
 
 	}
 

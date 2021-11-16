@@ -3,6 +3,8 @@ package com.example.EducationDepartment.Service;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import com.example.EducationDepartment.Repository.InstitutionRepository;
 @Service
 
 public class InstitutionService {
+	private static final Logger LOG = LogManager.getLogger(InstitutionService.class);
 	private final InstitutionRepository institutionRepository;
 
 	public InstitutionService(InstitutionRepository institutionRepository) {
@@ -26,8 +29,15 @@ public class InstitutionService {
 	 * @return
 	 */
 
-	public List<Institution> listAllInstitutions() {
-		return institutionRepository.findAll();
+	public ResponseEntity<Object> listAllInstitutions() {
+		List<Institution> institutionList = institutionRepository.findAll();
+		if (institutionList.isEmpty()) {
+			LOG.info("List is empty ");
+			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
+		} else {
+			LOG.info("List of institutions : " + institutionList);
+			return new ResponseEntity<>(institutionList, HttpStatus.OK);
+		}
 	}
 
 	/**
@@ -60,10 +70,15 @@ public class InstitutionService {
 	 * @param institution
 	 */
 
-	public void updateInstitution(Institution institution) {
-		Calendar date = Calendar.getInstance();
-		institution.setDate(date.getTime());
-		institutionRepository.save(institution);
+	public ResponseEntity<Object> updateInstitution(Institution institution) {
+		try {
+			Calendar date = Calendar.getInstance();
+			institution.setDate(date.getTime());
+			institutionRepository.save(institution);
+			return new ResponseEntity<>("Institution updated ", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>("Institution not updated ", HttpStatus.OK);
+		}
 	}
 
 }

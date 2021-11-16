@@ -39,14 +39,8 @@ public class DepartmentController {
 
 	public ResponseEntity<Object> departmentList() {
 
-		List<Department> departmentList = departmentService.listAllUser();
-		LOG.info("List of departments : " + departmentList);
+		return departmentService.listAllUser();
 
-		if (departmentList.isEmpty()) {
-			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
-		} else {
-			return new ResponseEntity<>(departmentList, HttpStatus.OK);
-		}
 	}
 
 	/**
@@ -72,14 +66,7 @@ public class DepartmentController {
 	@PutMapping("/updateDepartment")
 	public ResponseEntity<Object> updateDepartment(@RequestBody Department department) {
 
-		try {
-			departmentService.updateDepartment(department);
-			LOG.info("Department updated successfully:  " + department);
-			return new ResponseEntity<>("Department info updated successfully ", HttpStatus.OK);
-		} catch (NoSuchElementException e) {
-			LOG.error(e.getMessage(), e);
-			return new ResponseEntity<>("Department not found incorrect id ", HttpStatus.NOT_FOUND);
-		}
+		return departmentService.updateDepartment(department);
 
 	}
 

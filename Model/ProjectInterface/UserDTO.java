@@ -1,15 +1,6 @@
 package com.example.EducationDepartment.Model.ProjectInterface;
-/**
- * RegisterStudentDTO
- * @author RaisAhmad
- *
- */
-import java.util.List;
 
-import com.example.EducationDepartment.Model.Department;
-import com.example.EducationDepartment.Model.Roles;
-
-public class StudentRegistation {
+public class UserDTO {
 	private String firstName;
 	private String lastName;
 	private String cnic;
@@ -18,16 +9,9 @@ public class StudentRegistation {
 	private String email;
 	private String address;
 	private String password;
-	private String classSection;
-	private List<Roles> roles;
-	
-	public List<Roles> getRoles() {
-		return roles;
-	}
-	public void setRoles(List<Roles> roles) {
-		this.roles = roles;
-	}
-	//private List<Department>departments;
+	private String experience;
+	private String departmentName;
+	private String designation;
 	
 	public String getFirstName() {
 		return firstName;
@@ -71,23 +55,30 @@ public class StudentRegistation {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-//	public List<Department> getDepartments() {
-//		return departments;
-//	}
-//	public void setDepartments(List<Department> departments) {
-//		this.departments = departments;
-//	}
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getClassSection() {
-		return classSection;
+	public String getExperience() {
+		return experience;
 	}
-	public void setClassSection(String classSection) {
-		this.classSection = classSection;
+	public void setExperience(String experience) {
+		this.experience = experience;
 	}
+	public String getDepartmentName() {
+		return departmentName;
+	}
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+	
 	
 }

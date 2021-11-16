@@ -2,6 +2,9 @@ package com.example.EducationDepartment.Service;
 
 import java.util.Calendar;
 import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,7 @@ import com.example.EducationDepartment.Repository.CurriculumRepository;
 @Service
 
 public class CurriculumService {
+	private static final Logger LOG = LogManager.getLogger(CurriculumService.class);
 	private final CurriculumRepository curriculumRepository;
 
 	public CurriculumService(CurriculumRepository curriculumRepository) {
@@ -24,8 +28,15 @@ public class CurriculumService {
 	 * @date 29/10/2021
 	 * @return
 	 */
-	public List<Curriculum> listAllUser() {
-		return curriculumRepository.findAll();
+	public ResponseEntity<Object> listAllUser() {
+		List<Curriculum> userList = curriculumRepository.findAll();
+		if (userList.isEmpty()) {
+			LOG.info("List is empty ");
+			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
+		} else {
+			LOG.info("List of Curriculum : " + userList);
+			return new ResponseEntity<>(userList, HttpStatus.OK);
+		}
 	}
 
 	/**
@@ -46,9 +57,11 @@ public class CurriculumService {
 
 				Calendar date = Calendar.getInstance();
 				curriculum.setDate(date.getTime());
+				LOG.info("Curriculum added ");
 				return ResponseEntity.ok().body(curriculumRepository.save(curriculum));
 			}
 		} catch (Exception e) {
+			LOG.info("Curriculum not added ");
 			return new ResponseEntity<>("Curriculum already exist ", HttpStatus.CONFLICT);
 		}
 
@@ -60,10 +73,17 @@ public class CurriculumService {
 	 * @param curriculum
 	 */
 
-	public void updateCurriculum(Curriculum curriculum) {
-		Calendar date = Calendar.getInstance();
-		curriculum.setUpdatedDate(date.getTime());
-		curriculumRepository.save(curriculum);
+	public ResponseEntity<Object> updateCurriculum(Curriculum curriculum) {
+		try {
+			Calendar date = Calendar.getInstance();
+			curriculum.setUpdatedDate(date.getTime());
+			curriculumRepository.save(curriculum);
+			LOG.info("Curriculum updated ");
+			return new ResponseEntity<>("Curriculum updated", HttpStatus.OK);
+		} catch (Exception e) {
+			LOG.info("Curriculum not updated ");
+			return new ResponseEntity<>("Curriculum not updated ", HttpStatus.OK);
+		}
 	}
 
 }

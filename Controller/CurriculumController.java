@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.EducationDepartment.Model.Curriculum;
-import com.example.EducationDepartment.Model.Department;
 import com.example.EducationDepartment.Service.CurriculumService;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -43,15 +42,8 @@ public class CurriculumController {
 
 	public ResponseEntity<Object> curriculumList() {
 
-		List<Curriculum> userList = curriculumService.listAllUser();
+		return curriculumService.listAllUser();
 
-		if (userList.isEmpty()) {
-			LOG.info("List is empty ");
-			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
-		} else {
-			LOG.info("List of Curriculum : " + userList);
-			return new ResponseEntity<>(userList, HttpStatus.OK);
-		}
 	}
 
 	/**
@@ -74,14 +66,7 @@ public class CurriculumController {
 	@PutMapping("/updateCurriculum")
 	public ResponseEntity<Object> updateCurriculum(@RequestBody Curriculum curriculum) {
 
-		try {
-			curriculumService.updateCurriculum(curriculum);
-			LOG.info("Curriculum updated successfully:  " + curriculum);
-			return new ResponseEntity<>("Curriculum info updated successfully ", HttpStatus.OK);
-		} catch (NoSuchElementException e) {
-			LOG.error(e.getMessage(), e);
-			return new ResponseEntity<>("Curriculum not found incorrect id ", HttpStatus.NOT_FOUND);
-		}
+		return curriculumService.updateCurriculum(curriculum);
 
 	}
 

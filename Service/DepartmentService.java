@@ -28,9 +28,16 @@ public class DepartmentService {
 	 * @date 29/10/2021
 	 * @return
 	 */
-	public List<Department> listAllUser() {
-		LOG.info("List of departments displayed ");
-		return departmentRepository.findAll();
+	public ResponseEntity<Object> listAllUser() {
+
+		List<Department> departmentList = departmentRepository.findAll();
+
+		if (departmentList.isEmpty()) {
+			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
+		} else {
+			LOG.info("List of departments displayed ");
+			return new ResponseEntity<>(departmentList, HttpStatus.OK);
+		}
 	}
 
 	/**

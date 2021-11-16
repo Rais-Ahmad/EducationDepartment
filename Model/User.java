@@ -11,28 +11,23 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-
-/**
- * 
- * @author RaisAhmad
- * @date 29/10/2021
- * @Discription Student's Class
- */
 @Entity
-@Table(name = "t_student")
+@Table(name = "t_user", indexes = {@Index(name = "user_cnic",  columnList="cnic"),
+		@Index(name = "user_verificationStatus", columnList="verificationStatus" ) })
 
-public class Student {
+public class User {
 
 	@Id
 	@Column(nullable = false)
@@ -49,6 +44,8 @@ public class Student {
 	private String email;
 
 	@Column(nullable = false)
+	@Min(value=1, message = "age should be greater than 0")
+    @Digits(integer = 3, fraction = 0)
 	private int age;
 
 	@Column(nullable = false)
@@ -57,7 +54,7 @@ public class Student {
 	@Column(nullable = false)
 	private String phone;
 
-	@Column(nullable = false, unique = true)
+	@Column(name ="cnic" ,nullable = false, unique = true)
 	private String cnic;
 
 	@Column(nullable = false)
@@ -70,70 +67,54 @@ public class Student {
 	private Date updatedDate;
 
 	@Column(nullable = true)
+	private String classSection;
+
+	@Column(nullable = true)
 	private int smsToken;
 
 	@Column(nullable = true)
 	private int emailToken;
 
-	@Column(nullable = true)
-	private boolean status;
+	@Column(name = "verificationStatus" ,nullable = true)
+	private boolean verificationStatus;
 
 	@Column(nullable = true)
 	private Date expirationDate;
-
-	public int getSmsToken() {
-		return smsToken;
-	}
-
-	public Date getExpirationDate() {
-		return expirationDate;
-	}
-
-	public void setExpirationDate(Date expirationDate) {
-		this.expirationDate = expirationDate;
-	}
-
-	public void setSmsToken(int smsToken) {
-		this.smsToken = smsToken;
-	}
-
-	public int getEmailToken() {
-		return emailToken;
-	}
-
-	public void setEmailToken(int emailToken) {
-		this.emailToken = emailToken;
-	}
-
-	public boolean isStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
-
+	
+	
+	
 	/**
-	 * On To Many Relationship between Student and Result
+	 *  Many To Many relationship between user and roles
+	 */
+
+	@ManyToMany(targetEntity = Roles.class, cascade = { CascadeType.MERGE })
+
+	@JoinTable(name = "t_UserRole", joinColumns = { @JoinColumn(name = "id") }, inverseJoinColumns = {
+			@JoinColumn(name = "roleId") })
+
+	private List<Roles> roles = new ArrayList<>();
+	
+	/**
+	 * On To Many Relationship between user and result
 	 */
 
 	@OneToMany(targetEntity = Result.class, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-	@JoinColumn(name = "resutId", referencedColumnName = "id")
+	@JoinColumn(name = "resultId", referencedColumnName = "id")
 	private List<Result> result = new ArrayList<>();
-
+	
 	/**
-	 * Many To Many Relationship between student and department
+	 * Many To Many Relationship between user and department
 	 */
 
 	@ManyToMany(targetEntity = Department.class, cascade = { CascadeType.MERGE })
 
-	@JoinTable(name = "t_StudentDepartment", joinColumns = { @JoinColumn(name = "id") }, inverseJoinColumns = {
+	@JoinTable(name = "t_UserDepartment", joinColumns = { @JoinColumn(name = "id") }, inverseJoinColumns = {
 			@JoinColumn(name = "departmentId") })
 
 	private List<Department> departments = new ArrayList<>();
-
+	
 	/**
-	 * One to Many Relationship Student and Degree
+	 * One to Many Relationship user and degree
 	 */
 
 	@OneToMany(targetEntity = Degree.class, cascade = CascadeType.MERGE)
@@ -141,6 +122,9 @@ public class Student {
 	@JoinColumn(name = "degreeId", referencedColumnName = "id")
 	private List<Degree> degree = new ArrayList<>();
 
+	
+
+	
 	public List<Degree> getDegree() {
 		return degree;
 	}
@@ -163,6 +147,14 @@ public class Student {
 
 	public void setResult(List<Result> result) {
 		this.result = result;
+	}
+
+	public List<Roles> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Roles> roles) {
+		this.roles = roles;
 	}
 
 	public long getId() {
@@ -251,6 +243,46 @@ public class Student {
 
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+
+	public String getClassSection() {
+		return classSection;
+	}
+
+	public void setClassSection(String classSection) {
+		this.classSection = classSection;
+	}
+
+	public int getSmsToken() {
+		return smsToken;
+	}
+
+	public void setSmsToken(int smsToken) {
+		this.smsToken = smsToken;
+	}
+
+	public int getEmailToken() {
+		return emailToken;
+	}
+
+	public void setEmailToken(int emailToken) {
+		this.emailToken = emailToken;
+	}
+
+	public boolean isVerificationStatus() {
+		return verificationStatus;
+	}
+
+	public void setVerificationStatus(boolean verificationStatus) {
+		this.verificationStatus = verificationStatus;
+	}
+
+	public Date getExpirationDate() {
+		return expirationDate;
+	}
+
+	public void setExpirationDate(Date expirationDate) {
+		this.expirationDate = expirationDate;
 	}
 
 }
