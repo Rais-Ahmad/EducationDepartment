@@ -19,6 +19,7 @@ public class StudentRegistation {
 	private String address;
 	private String password;
 	private String classSection;
+	private String username;
 	private List<Roles> roles;
 	
 	public List<Roles> getRoles() {
@@ -88,6 +89,12 @@ public class StudentRegistation {
 	}
 	public void setClassSection(String classSection) {
 		this.classSection = classSection;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 }

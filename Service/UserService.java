@@ -10,10 +10,15 @@ import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.EducationDepartment.Model.User;
@@ -33,7 +38,7 @@ import com.example.EducationDepartment.Repository.UserRepositry;
 import com.example.EducationDepartment.Util.Util;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 	private static final Logger LOG = LogManager.getLogger(UserService.class);
 	private final UserRepositry userRepository;
 	private final DepartmentRepository departmentRepository;
@@ -42,6 +47,8 @@ public class UserService {
 	private final DegreeRepository degreeRepository;
 	private final ResultRepository resultRepository;
 	private final ExamRepository examRepository;
+	@Autowired
+	private PasswordEncoder bCryptPasswordEncoder;
 	private final JavaMailSender javaMailSender;
 	private static boolean isLogin = false;
 	private static long idd;
@@ -94,9 +101,8 @@ public class UserService {
 			} else if (user.getEmail() == null) {
 				return new ResponseEntity<>("E-mail can't be empty", HttpStatus.BAD_REQUEST);
 			} else {
-				String cnic;
-				cnic = user.getCnic();
-
+				
+			    user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 				user.setVerificationStatus(false);
 				userRepository.save(user);
 
@@ -194,7 +200,10 @@ public class UserService {
 				user.setAge(studentRegistation.getAge());
 				user.setCnic(studentRegistation.getCnic());
 				user.setEmail(studentRegistation.getEmail());
-				user.setPassword(studentRegistation.getPassword());
+				user.setUserName(studentRegistation.getUsername());
+				
+//				user.setPassword(studentRegistation.getPassword());
+				user.setPassword(bCryptPasswordEncoder.encode(studentRegistation.getPassword()));
 				user.setPhone(studentRegistation.getPhone());
 				user.setClassSection(studentRegistation.getClassSection());
 //				user.setDepartments(studentRegistation.getDepartments());
@@ -211,7 +220,7 @@ public class UserService {
 		} catch (NumberFormatException n) {
 			return new ResponseEntity<>("Enter a number in age ", HttpStatus.OK);
 		} catch (Exception e) {
-			LOG.info("user is not added ");
+			LOG.info("user is not added " + e.getMessage() + e.getCause() );
 
 			return new ResponseEntity<>("user already exist at this E-mail Address or CNIC", HttpStatus.CONFLICT);
 		}
@@ -737,5 +746,15 @@ public class UserService {
 			return new ResponseEntity<>("You are not logged in yet! ", HttpStatus.UNAUTHORIZED);
 
 	}
+	
+	  @Override
+	    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	        Optional<User> user = userRepository.findUserByUsername(username);
+	        if (user.isPresent()) {
+	            return new org.springframework.security.core.userdetails.User(user.get().getUserName(), user.get().getPassword(),new ArrayList<>());
+	        } else {
+	            throw new UsernameNotFoundException("User not found with username: " + username);
+	        }
+	    }
 
 }

@@ -9,9 +9,6 @@ public class UserDTO {
 	private String email;
 	private String address;
 	private String password;
-	private String experience;
-	private String departmentName;
-	private String designation;
 	
 	public String getFirstName() {
 		return firstName;
@@ -61,24 +58,7 @@ public class UserDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getExperience() {
-		return experience;
-	}
-	public void setExperience(String experience) {
-		this.experience = experience;
-	}
-	public String getDepartmentName() {
-		return departmentName;
-	}
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
-	}
-	public String getDesignation() {
-		return designation;
-	}
-	public void setDesignation(String designation) {
-		this.designation = designation;
-	}
+
 	
 	
 }

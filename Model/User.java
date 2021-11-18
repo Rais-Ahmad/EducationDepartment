@@ -39,6 +39,9 @@ public class User {
 
 	@Column(nullable = false)
 	private String lastName;
+	
+	@Column(nullable = false, unique = true)
+	private String username;
 
 	@Column(nullable = false, unique = true)
 	private String email;
@@ -283,6 +286,14 @@ public class User {
 
 	public void setExpirationDate(Date expirationDate) {
 		this.expirationDate = expirationDate;
+	}
+
+	public String getUserName() {
+		return username;
+	}
+
+	public void setUserName(String username) {
+		this.username = username;
 	}
 
 }
