@@ -58,6 +58,7 @@ public class RoleService {
 				return new ResponseEntity<>("Roles name can't be empty", HttpStatus.BAD_REQUEST);
 			} else {
 				LOG.info("Role saved ");
+				role.setActive(false);
 				return ResponseEntity.ok().body(roleRepository.save(role));
 			}
 		} catch (Exception e) {

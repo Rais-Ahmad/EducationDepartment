@@ -20,9 +20,4 @@ public class EducationDepartmentApplication {
 		
 	}
 	
-//	@Bean
-//	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-//		return new BCryptPasswordEncoder();
-//	}
-
 }

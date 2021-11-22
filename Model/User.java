@@ -23,6 +23,8 @@ import javax.validation.constraints.Min;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "t_user", indexes = {@Index(name = "user_cnic",  columnList="cnic"),
 		@Index(name = "user_verificationStatus", columnList="verificationStatus" ) })
@@ -89,8 +91,8 @@ public class User {
 	/**
 	 *  Many To Many relationship between user and roles
 	 */
-
-	@ManyToMany(targetEntity = Roles.class, cascade = { CascadeType.MERGE })
+	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@ManyToMany(targetEntity = Roles.class, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 
 	@JoinTable(name = "t_UserRole", joinColumns = { @JoinColumn(name = "id") }, inverseJoinColumns = {
 			@JoinColumn(name = "roleId") })
@@ -100,15 +102,15 @@ public class User {
 	/**
 	 * On To Many Relationship between user and result
 	 */
-
-	@OneToMany(targetEntity = Result.class, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@OneToMany(targetEntity = Result.class, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "resultId", referencedColumnName = "id")
 	private List<Result> result = new ArrayList<>();
 	
 	/**
 	 * Many To Many Relationship between user and department
 	 */
-
+	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@ManyToMany(targetEntity = Department.class, cascade = { CascadeType.MERGE })
 
 	@JoinTable(name = "t_UserDepartment", joinColumns = { @JoinColumn(name = "id") }, inverseJoinColumns = {
@@ -119,7 +121,7 @@ public class User {
 	/**
 	 * One to Many Relationship user and degree
 	 */
-
+	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@OneToMany(targetEntity = Degree.class, cascade = CascadeType.MERGE)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinColumn(name = "degreeId", referencedColumnName = "id")

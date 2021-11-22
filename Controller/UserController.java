@@ -281,6 +281,19 @@ public class UserController {
 		return userService.updateUser(user);
 	}
 	
+	
+	/**
+	 * JWT Authentication
+	 */
+	
+	/**
+	 * @author RaisAhmad
+	 * @date 18/11/2021
+	 * @param authenticationRequest
+	 * @return
+	 * @throws Exception
+	 */
+	
 	  @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
@@ -293,6 +306,13 @@ public class UserController {
 	        return ResponseEntity.ok(new JwtResponse(token));
 	    }
 
+	  /**
+	   * @author RaisAhmad
+	   * @date 18/11/2021
+	   * @param username
+	   * @param password
+	   * @throws Exception
+	   */
 	    private void authenticate(String username, String password) throws Exception {
 	        try {
 	            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -302,5 +322,6 @@ public class UserController {
 	            throw new Exception("INVALID_CREDENTIALS", e);
 	        }
 	    }
-
+	    
+	    
 }

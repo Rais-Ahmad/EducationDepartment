@@ -3,10 +3,12 @@ package com.example.EducationDepartment.Service;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -207,6 +210,7 @@ public class UserService implements UserDetailsService {
 				user.setPhone(studentRegistation.getPhone());
 				user.setClassSection(studentRegistation.getClassSection());
 //				user.setDepartments(studentRegistation.getDepartments());
+				
 				user.setRoles(studentRegistation.getRoles());
 
 				user.setVerificationStatus(false);
@@ -751,10 +755,28 @@ public class UserService implements UserDetailsService {
 	    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 	        Optional<User> user = userRepository.findUserByUsername(username);
 	        if (user.isPresent()) {
-	            return new org.springframework.security.core.userdetails.User(user.get().getUserName(), user.get().getPassword(),new ArrayList<>());
+	            return new org.springframework.security.core.userdetails.User(user.get().getUserName(), user.get().getPassword(),getAuthority(user.get()));
 	        } else {
 	            throw new UsernameNotFoundException("User not found with username: " + username);
 	        }
+	    }
+	  
+	  
+	  /**
+	   * New
+	   */
+	  
+	  /**
+	     * Fetching the roles of a user so that can give him the authorities for the apis
+	     * @param user
+	     * @return
+	     */
+	    private Set<SimpleGrantedAuthority> getAuthority(User user) {
+	        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+	        user . getRoles () . forEach (role -> {
+	            authorities.add(new SimpleGrantedAuthority(role.getName()));
+	        });
+	        return authorities;
 	    }
 
 }
