@@ -4,10 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,16 +12,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.EducationDepartment.Model.JwtRequest;
-import com.example.EducationDepartment.Model.JwtResponse;
 import com.example.EducationDepartment.Model.User;
 import com.example.EducationDepartment.Model.ProjectInterface.StudentRegistation;
 import com.example.EducationDepartment.Service.UserService;
-import com.example.EducationDepartment.config.JwtTokenUtil;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -40,13 +32,11 @@ public class UserController {
 	
 	private static final String token = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
 	UserService userService;
-	private JwtTokenUtil jwtTokenUtil;
+	//private JwtTokenUtil jwtTokenUtil;
 	private AuthenticationManager authenticationManager;
 	
-	  public UserController(UserService userService, AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil) {
+	  public UserController(UserService userService) {
 	        this.userService = userService;
-	        this.authenticationManager = authenticationManager;
-	        this.jwtTokenUtil = jwtTokenUtil;
 	    }
 	  
 	  public boolean authorization(String token) {
@@ -281,11 +271,6 @@ public class UserController {
 		return userService.updateUser(user);
 	}
 	
-	
-	/**
-	 * JWT Authentication
-	 */
-	
 	/**
 	 * @author RaisAhmad
 	 * @date 18/11/2021
@@ -294,7 +279,7 @@ public class UserController {
 	 * @throws Exception
 	 */
 	
-	  @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+	/*  @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
 	        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -305,6 +290,7 @@ public class UserController {
 
 	        return ResponseEntity.ok(new JwtResponse(token));
 	    }
+	    */
 
 	  /**
 	   * @author RaisAhmad
@@ -313,7 +299,7 @@ public class UserController {
 	   * @param password
 	   * @throws Exception
 	   */
-	    private void authenticate(String username, String password) throws Exception {
+	 /*   private void authenticate(String username, String password) throws Exception {
 	        try {
 	            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 	        } catch (DisabledException e) {
@@ -322,6 +308,6 @@ public class UserController {
 	            throw new Exception("INVALID_CREDENTIALS", e);
 	        }
 	    }
-	    
+	    */
 	    
 }

@@ -763,11 +763,7 @@ public class UserService implements UserDetailsService {
 	  
 	  
 	  /**
-	   * New
-	   */
-	  
-	  /**
-	     * Fetching the roles of a user so that can give him the authorities for the apis
+	     * Fetching the roles of a user so that can give him the authorities for the APIs
 	     * @param user
 	     * @return
 	     */
