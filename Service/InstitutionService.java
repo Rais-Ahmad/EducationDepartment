@@ -1,5 +1,6 @@
 package com.example.EducationDepartment.Service;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.EducationDepartment.Model.Institution;
 import com.example.EducationDepartment.Repository.InstitutionRepository;
+import com.example.EducationDepartment.Util.ResponseHandler;
 
 @Service
 
@@ -29,14 +31,18 @@ public class InstitutionService {
 	 * @return
 	 */
 
-	public ResponseEntity<Object> listAllInstitutions() {
+	public ResponseEntity<Object> listAllInstitutions() throws ParseException {
 		List<Institution> institutionList = institutionRepository.findAll();
 		if (institutionList.isEmpty()) {
 			LOG.info("List is empty ");
-			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
+			//return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
+			return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND,true,"There are no institutions in the database",null);
+
 		} else {
 			LOG.info("List of institutions : " + institutionList);
-			return new ResponseEntity<>(institutionList, HttpStatus.OK);
+			//return new ResponseEntity<>(institutionList, HttpStatus.OK);
+			 return ResponseHandler.generateResponse(HttpStatus.OK,false,"List of All institutions",institutionList);
+
 		}
 	}
 

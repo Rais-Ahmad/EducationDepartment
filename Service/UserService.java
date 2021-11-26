@@ -1,5 +1,6 @@
 package com.example.EducationDepartment.Service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,6 +39,7 @@ import com.example.EducationDepartment.Repository.ExamRepository;
 import com.example.EducationDepartment.Repository.InstitutionRepository;
 import com.example.EducationDepartment.Repository.ResultRepository;
 import com.example.EducationDepartment.Repository.UserRepositry;
+import com.example.EducationDepartment.Util.ResponseHandler;
 import com.example.EducationDepartment.Util.Util;
 
 @Service
@@ -126,14 +128,24 @@ public class UserService implements UserDetailsService {
 	 * @return
 	 */
 
-	public ResponseEntity<Object> listAllUsersByDate() {
+	public ResponseEntity<Object> listAllUsersByDate() throws ParseException {
 
+		try {
+		
 		List<User> userList = userRepository.findAllByOrderByDateDesc();
 		if (userList.isEmpty()) {
-			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
+			
+			return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND,true,"There are no users in the database",null);
 		} else {
-			return new ResponseEntity<>(userList, HttpStatus.OK);
+			
+			 return ResponseHandler.generateResponse(HttpStatus.OK,false,"List of All users",userList);
 		}
+	 }
+    catch (Exception e){
+        LOG.info("Exception throws "+ e.getMessage() );
+        return ResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR,true,"Exception"+e.getMessage(),null);
+
+    }
 
 	}
 
@@ -290,7 +302,7 @@ public class UserService implements UserDetailsService {
 				user.setUpdatedDate(date.getTime());
 				userRepository.save(user);
 				LOG.info("user updated successfully : " + user);
-				return new ResponseEntity<>("user has been successfully Updated", HttpStatus.CREATED);
+				return new ResponseEntity<>("User's name has been successfully Updated", HttpStatus.CREATED);
 
 			} catch (NoSuchElementException e) {
 
@@ -319,8 +331,8 @@ public class UserService implements UserDetailsService {
 				Calendar date = Calendar.getInstance();
 				user.setUpdatedDate(date.getTime());
 				userRepository.save(user);
-				LOG.info("Student password is updated :  " + user);
-				return new ResponseEntity<>("Student's password has been successfully Updated", HttpStatus.CREATED);
+				LOG.info("User password is updated :  " + user);
+				return new ResponseEntity<>("User's password has been successfully Updated", HttpStatus.CREATED);
 
 			} catch (NoSuchElementException e) {
 
@@ -349,8 +361,8 @@ public class UserService implements UserDetailsService {
 				Calendar date = Calendar.getInstance();
 				user.setUpdatedDate(date.getTime());
 				userRepository.save(user);
-				LOG.info("Student phne number is updated :  " + user);
-				return new ResponseEntity<>("Student's phne number has been successfully Updated", HttpStatus.CREATED);
+				LOG.info("User phone number is updated :  " + user);
+				return new ResponseEntity<>("User's phone number has been successfully Updated", HttpStatus.CREATED);
 
 			} catch (NoSuchElementException e) {
 
@@ -448,10 +460,10 @@ public class UserService implements UserDetailsService {
 		try {
 			userRepository.deleteById(id);
 			LOG.info("Student deleted successfully ");
-			return new ResponseEntity<Object>("Student deleted successfully! ", HttpStatus.OK);
+			return new ResponseEntity<Object>("User deleted successfully! ", HttpStatus.OK);
 		} catch (Exception e) {
-			LOG.info("Student can't be deleted ");
-			return new ResponseEntity<Object>("Student not found! ", HttpStatus.NOT_FOUND);
+			LOG.info("User can't be deleted ");
+			return new ResponseEntity<Object>("User not found! ", HttpStatus.NOT_FOUND);
 		}
 	}
 
@@ -755,6 +767,8 @@ public class UserService implements UserDetailsService {
 	    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 	        Optional<User> user = userRepository.findUserByUsername(username);
 	        if (user.isPresent()) {
+	        	isLogin = true;
+				idd = user.get().getId();
 	            return new org.springframework.security.core.userdetails.User(user.get().getUserName(), user.get().getPassword(),getAuthority(user.get()));
 	        } else {
 	            throw new UsernameNotFoundException("User not found with username: " + username);

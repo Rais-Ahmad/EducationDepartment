@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.EducationDepartment.Model.Roles;
 import com.example.EducationDepartment.Repository.RoleRepository;
+import com.example.EducationDepartment.Util.ResponseHandler;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -28,15 +30,19 @@ public class RoleService {
 	 * @return
 	 */
 
-	public ResponseEntity<Object> listAllRoles() {
+	public ResponseEntity<Object> listAllRoles() throws ParseException{
 		List<Roles> roleList = roleRepository.findAll();
 
 		if (roleList.isEmpty()) {
 			LOG.info("List is empty ");
-			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
+			//return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
+			return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND,true,"There are no roles in the database",null);
+
 		} else {
 			LOG.info("List of roles : " + roleList);
-			return new ResponseEntity<>(roleList, HttpStatus.OK);
+			//return new ResponseEntity<>(roleList, HttpStatus.OK);
+			 return ResponseHandler.generateResponse(HttpStatus.OK,false,"List of All roles",roleList);
+
 		}
 	}
 

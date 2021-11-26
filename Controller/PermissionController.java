@@ -1,5 +1,7 @@
 package com.example.EducationDepartment.Controller;
 
+import java.text.ParseException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,7 @@ public class PermissionController {
 	 */
 	@GetMapping("/allPermissions")
     
-	public ResponseEntity<Object> permissionList() {
+	public ResponseEntity<Object> permissionList() throws ParseException {
 
 		return permissionService.listAllPermissions();
 

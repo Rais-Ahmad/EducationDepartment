@@ -2,6 +2,8 @@ package com.example.EducationDepartment.Controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.text.ParseException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -37,9 +39,9 @@ public class DepartmentController {
 	 */
 	@GetMapping("/allDepartments")
 
-	public ResponseEntity<Object> departmentList() {
+	public ResponseEntity<Object> departmentList() throws ParseException {
 
-		return departmentService.listAllUser();
+		return departmentService.DepartmentList();
 
 	}
 

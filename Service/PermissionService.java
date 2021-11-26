@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.EducationDepartment.Model.Permissions;
 import com.example.EducationDepartment.Repository.PermissionRepository;
+import com.example.EducationDepartment.Util.ResponseHandler;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -28,16 +30,20 @@ public class PermissionService {
 	 * @return
 	 */
 
-	public ResponseEntity<Object> listAllPermissions() {
+	public ResponseEntity<Object> listAllPermissions() throws ParseException {
 
 		List<Permissions> permissionList = permissionRepository.findAll();
 
 		if (permissionList.isEmpty()) {
 			LOG.info("List is empty ");
-			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
+			//return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
+			return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND,true,"There are no permissions in the database",null);
+
 		} else {
 			LOG.info("List of permissions : " + permissionList);
-			return new ResponseEntity<>(permissionList, HttpStatus.OK);
+			//return new ResponseEntity<>(permissionList, HttpStatus.OK);
+			 return ResponseHandler.generateResponse(HttpStatus.OK,false,"List of All permissions",permissionList);
+
 		}
 	}
 

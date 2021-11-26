@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.EducationDepartment.Model.Roles;
 import com.example.EducationDepartment.Service.RoleService;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -32,7 +33,7 @@ public class RoleController {
 	 */
 	@GetMapping("/allRoles")
 
-	public ResponseEntity<Object> roleList() {
+	public ResponseEntity<Object> roleList() throws ParseException{
 
 		return roleService.listAllRoles();
 

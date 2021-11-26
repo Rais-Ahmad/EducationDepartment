@@ -1,5 +1,6 @@
 package com.example.EducationDepartment.Service;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.EducationDepartment.Model.Department;
 import com.example.EducationDepartment.Repository.DepartmentRepository;
+import com.example.EducationDepartment.Util.ResponseHandler;
 
 @Service
 public class DepartmentService {
@@ -28,15 +30,20 @@ public class DepartmentService {
 	 * @date 29/10/2021
 	 * @return
 	 */
-	public ResponseEntity<Object> listAllUser() {
+	public ResponseEntity<Object> DepartmentList() throws ParseException{
 
 		List<Department> departmentList = departmentRepository.findAll();
 
 		if (departmentList.isEmpty()) {
-			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
+			//return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
+			return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND,true,"There are no departments in the database",null);
+
+			
 		} else {
 			LOG.info("List of departments displayed ");
-			return new ResponseEntity<>(departmentList, HttpStatus.OK);
+//			return new ResponseEntity<>(departmentList, HttpStatus.OK);
+			 return ResponseHandler.generateResponse(HttpStatus.OK,false,"List of All departments",departmentList);
+
 		}
 	}
 

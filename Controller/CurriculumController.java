@@ -1,5 +1,6 @@
 package com.example.EducationDepartment.Controller;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -40,9 +41,9 @@ public class CurriculumController {
 
 	@GetMapping("/allCurriculum")
 
-	public ResponseEntity<Object> curriculumList() {
+	public ResponseEntity<Object> curriculumList() throws ParseException {
 
-		return curriculumService.listAllUser();
+		return curriculumService.listAllCurriculum();
 
 	}
 

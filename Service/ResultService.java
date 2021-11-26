@@ -1,5 +1,6 @@
 package com.example.EducationDepartment.Service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -15,6 +16,7 @@ import com.example.EducationDepartment.Model.Result;
 import com.example.EducationDepartment.Model.Roles;
 import com.example.EducationDepartment.Model.ProjectInterface.ResultListDTO;
 import com.example.EducationDepartment.Repository.ResultRepository;
+import com.example.EducationDepartment.Util.ResponseHandler;
 
 @Service
 public class ResultService {
@@ -31,11 +33,13 @@ public class ResultService {
 	 * @date 1/11/2021
 	 * @return
 	 */
-	public ResponseEntity<Object> listAllResults() {
+	public ResponseEntity<Object> listAllResults() throws ParseException {
 		List<Result> resultList = resultRepository.findAll();
 		if (resultList.isEmpty()) {
 			LOG.info("Result List is empty ");
-			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
+			//return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
+			return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND,true,"There are no results in the database",null);
+
 		} else {
 
 			List<ResultListDTO> resultDTOs = new ArrayList<ResultListDTO>();
@@ -53,7 +57,9 @@ public class ResultService {
 			}
 
 			LOG.info("Result list :  " + resultList);
-			return new ResponseEntity<>(resultDTOs, HttpStatus.OK);
+			//return new ResponseEntity<>(resultDTOs, HttpStatus.OK);
+			 return ResponseHandler.generateResponse(HttpStatus.OK,false,"List of All results",resultDTOs);
+
 		}
 	}
 
@@ -84,7 +90,7 @@ public class ResultService {
 				return ResponseEntity.ok().body(resultRepository.save(result));
 			}
 		} catch (Exception e) {
-			return new ResponseEntity<>("User already exist ", HttpStatus.CONFLICT);
+			return new ResponseEntity<>("Result already exist ", HttpStatus.CONFLICT);
 		}
 
 	}

@@ -1,5 +1,6 @@
 package com.example.EducationDepartment.Controller;
 
+import java.text.ParseException;
 import java.util.NoSuchElementException;
 
 import org.apache.logging.log4j.LogManager;
@@ -39,7 +40,7 @@ public class ResultController {
 	 */
 	@GetMapping("/allResults")
 
-	public ResponseEntity<Object> allResults() {
+	public ResponseEntity<Object> allResults() throws ParseException {
 
 		return (ResponseEntity<Object>) resultService.listAllResults();
 

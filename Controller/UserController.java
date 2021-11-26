@@ -1,5 +1,7 @@
 package com.example.EducationDepartment.Controller;
 
+import java.text.ParseException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,7 +73,7 @@ public class UserController {
 	 */
 	@GetMapping("/allUsers")
 
-	public ResponseEntity<Object> studentList() {
+	public ResponseEntity<Object> studentList() throws ParseException {
 		return (ResponseEntity<Object>) userService.listAllUsersByDate();
 
 	}

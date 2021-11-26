@@ -1,5 +1,6 @@
 package com.example.EducationDepartment.Service;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.EducationDepartment.Model.Curriculum;
 import com.example.EducationDepartment.Repository.CurriculumRepository;
+import com.example.EducationDepartment.Util.ResponseHandler;
 
 @Service
 
@@ -28,14 +30,18 @@ public class CurriculumService {
 	 * @date 29/10/2021
 	 * @return
 	 */
-	public ResponseEntity<Object> listAllUser() {
-		List<Curriculum> userList = curriculumRepository.findAll();
-		if (userList.isEmpty()) {
+	public ResponseEntity<Object> listAllCurriculum() throws ParseException {
+		List<Curriculum> curriculumList = curriculumRepository.findAll();
+		if (curriculumList.isEmpty()) {
 			LOG.info("List is empty ");
-			return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
+			return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND,true,"There are no curriculums in the database",null);
+
+			//return new ResponseEntity<>("No data available", HttpStatus.NOT_FOUND);
 		} else {
-			LOG.info("List of Curriculum : " + userList);
-			return new ResponseEntity<>(userList, HttpStatus.OK);
+			LOG.info("List of Curriculum : " + curriculumList);
+			 return ResponseHandler.generateResponse(HttpStatus.OK,false,"List of All curriculum",curriculumList);
+
+			//return new ResponseEntity<>(userList, HttpStatus.OK);
 		}
 	}
 
